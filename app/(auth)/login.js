@@ -19,8 +19,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // Implement your login logic here
-    console.log("Login button pressed!");
+    router.navigate('profile')
   };
 
   return (

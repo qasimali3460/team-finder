@@ -5,21 +5,21 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import assets from "../../assets/assets";
 import { RFValue } from "react-native-responsive-fontsize";
 import { LinearGradient } from "expo-linear-gradient";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 
 const Welcome = () => {
   const goToLogin = () => {
-    router.navigate("register");
+    router.navigate("profile");
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <>
+      <StatusBar barStyle={"light-content"} />
       <ImageBackground source={assets.background2} style={styles.wrapper}>
         <StatusBar style="light" />
         <LinearGradient
@@ -42,7 +42,7 @@ const Welcome = () => {
           </View>
         </LinearGradient>
       </ImageBackground>
-    </SafeAreaView>
+    </>
   );
 };
 
