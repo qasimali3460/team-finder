@@ -12,7 +12,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
 import PlayerInfo from "@/components/tiles/profile/PlayerInfo";
-import { Rating, AirbnbRating } from "react-native-ratings";
+import { AirbnbRating } from "react-native-ratings";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
 
 const teams = [
@@ -21,7 +21,7 @@ const teams = [
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMSYerJFUDA_P0_YKm0tizI0kogAj6wXxzWQ&s",
   },
   {
-    title: "Lahoere Qalanders",
+    title: "Lahore Qalanders",
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtlgBlQvIzJZ4u8R8lcGNlD0pyG5lUPiH9rA&s",
   },
   {
