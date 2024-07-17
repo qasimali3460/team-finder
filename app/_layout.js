@@ -7,6 +7,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { NativeBaseProvider } from "native-base";
 import "react-native-reanimated";
 
 SplashScreen.preventAutoHideAsync();
@@ -27,11 +28,13 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={DefaultTheme}>
+    <NativeBaseProvider>
+      {/* <ThemeProvider value={DefaultTheme}> */}
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(welcome)" options={{ headerShown: false }} />
         {/* <Stack.Screen name="(auth)" options={{ headerShown: false }} /> */}
       </Stack>
-    </ThemeProvider>
+      {/* </ThemeProvider> */}
+    </NativeBaseProvider>
   );
 }

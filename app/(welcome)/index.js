@@ -14,7 +14,7 @@ import { router } from "expo-router";
 
 const Welcome = () => {
   const goToLogin = () => {
-    router.navigate("profile");
+    router.navigate("edit-profile");
   };
 
   return (
