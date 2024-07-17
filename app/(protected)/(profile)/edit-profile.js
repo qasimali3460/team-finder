@@ -7,6 +7,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { preferredRoles } from "../../../constants/Players";
 import DatePicker from "../../../components/input/datepicker";
 import ProfileImage from "../../../components/input/profile-image";
+import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 
 const EditProfile = () => {
   const [img, setImg] = useState("");
@@ -16,6 +17,7 @@ const EditProfile = () => {
     <ScrollView style={styles.wrappper}>
       <SafeAreaView>
         <StatusBar barStyle={"dark-content"} />
+        <ScreenHeader />
         <View style={styles.imgOuter}>
           <ProfileImage uri={img} setUri={setImg} />
         </View>
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
   fieldTitle: {
     fontSize: RFValue(15),
     fontWeight: "500",
-    marginBottom: 8,
+    marginBottom: 5,
   },
   picker: {
     borderWidth: 1,
