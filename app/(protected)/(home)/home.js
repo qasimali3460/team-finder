@@ -27,7 +27,7 @@ const tiles = [
   {
     name: "My Team",
     icon: assets.cricket,
-    path: "",
+    path: "team",
     colors: ["hsla(318, 44%, 51%, 1)", "hsla(347, 94%, 48%, 1)"],
   },
   {
