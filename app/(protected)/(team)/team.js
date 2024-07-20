@@ -15,6 +15,7 @@ import PlayerInfo from "@/components/tiles/profile/PlayerInfo";
 import { AirbnbRating } from "react-native-ratings";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
 import TeamMatch from "../../../components/tiles/profile/TeamMatch";
+import TimelineCalendarScreen from "../../../components/input/timeline";
 
 const teams = [
   {
@@ -84,7 +85,7 @@ const Profile = () => {
                 />
               </View>
               <TouchableOpacity style={styles.follow} onPress={editProfile}>
-                <Text style={styles.followText}>Edit Profile</Text>
+                <Text style={styles.followText}>Edit Team</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -96,16 +97,9 @@ const Profile = () => {
           </View>
         </View>
         <View style={[styles.otherInfo, { marginTop: 20 }]}>
-          <Text style={styles.detailTitle}>Upcoming Matches</Text>
+          <Text style={styles.detailTitle}>Schedule</Text>
           <View style={styles.teamsSection}>
-            {teams.map((team, key) => {
-              return (
-                <TeamMatch
-                  title1="Sialkot Stallion"
-                  logo1="https://media.licdn.com/dms/image/sync/D5627AQFXZbWf9v3nDw/articleshare-shrink_800/0/1712261825109?e=2147483647&v=beta&t=t5DfAaQ-4ZX1bazhoh1MXNxJoFZuNzyLJP9nXOIfc7E"
-                />
-              );
-            })}
+            <TimelineCalendarScreen />
           </View>
         </View>
       </View>
@@ -190,6 +184,7 @@ const styles = StyleSheet.create({
   },
   otherInfo: {
     padding: 10,
+    backgroundColor: "white",
   },
   detailTitle: {
     fontSize: RFValue(20),
@@ -197,6 +192,7 @@ const styles = StyleSheet.create({
   },
   teamsSection: {
     flex: 1,
+    marginTop: 10,
   },
   otherTeamWrapper: {
     width: "50%",
