@@ -37,9 +37,9 @@ const tiles = [
     colors: ["hsla(270, 94%, 25%, 1)", "hsla(158, 94%, 49%, 1)"],
   },
   {
-    name: "Team Invites",
+    name: "Match Invites",
     icon: assets.invites,
-    path: "",
+    path: "match-invites",
     colors: ["hsla(52, 43%, 55%, 1)", "hsla(51, 33%, 75%, 1)"],
   },
 ];

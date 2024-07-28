@@ -5,18 +5,10 @@ import {
   Dimensions,
   StatusBar,
   Animated,
-  FlatList,
   Pressable,
-  Image,
 } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
-import {
-  NativeBaseProvider,
-  Box,
-  Text,
-  Center,
-  useColorModeValue,
-} from "native-base";
+import { Box, useColorModeValue } from "native-base";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Pending from "./Pending";

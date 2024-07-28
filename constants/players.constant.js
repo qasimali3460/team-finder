@@ -55,3 +55,31 @@ export const teamMembers = [
   { image: assets.player1, id: "4", name: "Chris Johnson", role: "Bowler" },
   { image: assets.player1, id: "4", name: "Chris Johnson", role: "Bowler" },
 ];
+
+export const matchInvites = [
+  {
+    id: 1,
+    teamName: "Team A",
+    date: "2024-08-01",
+    time: "10:00 AM",
+    location: "Qaddafi stadium lahore",
+    image: assets.illustr1,
+  },
+  {
+    id: 2,
+    teamName: "Team B",
+    date: "2024-08-05",
+    time: "2:00 PM",
+    location: "Rawalpindi stadium",
+    image: assets.illustr1,
+  },
+  {
+    id: 3,
+    teamName: "Team C",
+    date: "2024-08-10",
+    time: "5:00 PM",
+    location:
+      "Ground goverment boys high school pasrur tehsil pasrur distric sialkot",
+    image: assets.illustr1,
+  },
+];
