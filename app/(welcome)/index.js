@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ImageBackground,
   Text,
@@ -14,8 +14,14 @@ import { router } from "expo-router";
 
 const Welcome = () => {
   const goToLogin = () => {
-    router.navigate("home");
+    router.navigate("team-members");
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      goToLogin();
+    }, 500);
+  }, []);
 
   return (
     <>

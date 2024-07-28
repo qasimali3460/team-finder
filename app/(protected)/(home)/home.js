@@ -33,7 +33,7 @@ const tiles = [
   {
     name: "Team Members",
     icon: assets.teamMembers,
-    path: "",
+    path: "team-members",
     colors: ["hsla(270, 94%, 25%, 1)", "hsla(158, 94%, 49%, 1)"],
   },
   {

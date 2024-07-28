@@ -20,6 +20,12 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="team-members"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

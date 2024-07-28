@@ -46,7 +46,7 @@ const Profile = () => {
   };
 
   const editProfile = () => {
-    router.navigate("edit-profile");
+    router.navigate("edit-team");
   };
 
   return (

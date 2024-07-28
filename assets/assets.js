@@ -13,6 +13,7 @@ const assets = {
   invites: require("./images/invitation.png"),
   home: require("./images/home.jpg"),
   cricket: require("./images/cricket.png"),
+  player1: require("./images/player1.jpg"),
 };
 
 export default assets;

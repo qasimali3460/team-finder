@@ -4,7 +4,7 @@ import { Picker } from "@react-native-picker/picker";
 import { ScrollView, StatusBar, TextField } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RFValue } from "react-native-responsive-fontsize";
-import { preferredRoles } from "../../../constants/Players";
+import { preferredRoles } from "../../../constants/players.constant";
 import DatePicker from "../../../components/input/datepicker";
 import ProfileImage from "../../../components/input/profile-image";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";

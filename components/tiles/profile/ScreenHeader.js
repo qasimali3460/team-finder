@@ -4,7 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
 
-const ScreenHeader = ({ handleDone }) => {
+const ScreenHeader = ({ handleDone, title, showDone }) => {
   const handleGoBack = () => {
     router.back();
   };
@@ -13,10 +13,14 @@ const ScreenHeader = ({ handleDone }) => {
       <TouchableOpacity onPress={handleGoBack}>
         <FontAwesome name="arrow-left" size={24} color="black" />
       </TouchableOpacity>
-      <Text style={styles.title}>Profile</Text>
-      <TouchableOpacity onPress={handleDone}>
-        <Text style={styles.action}>Done</Text>
-      </TouchableOpacity>
+      <Text style={styles.title}>{title}</Text>
+      {showDone ? (
+        <TouchableOpacity onPress={handleDone}>
+          <Text style={styles.action}>Done</Text>
+        </TouchableOpacity>
+      ) : (
+        <Text></Text>
+      )}
     </View>
   );
 };
