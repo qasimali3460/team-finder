@@ -32,6 +32,12 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="match-invite-detail"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

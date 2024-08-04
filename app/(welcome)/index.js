@@ -14,7 +14,7 @@ import { router } from "expo-router";
 
 const Welcome = () => {
   const goToLogin = () => {
-    router.navigate("match-invites");
+    router.navigate("home");
   };
 
   useEffect(() => {

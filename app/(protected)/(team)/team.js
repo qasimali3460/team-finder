@@ -11,7 +11,7 @@ import React from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
-import PlayerInfo from "@/components/tiles/profile/PlayerInfo";
+import PlayerInfo from "@/components/tiles/profile/Info";
 import { AirbnbRating } from "react-native-ratings";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
 import TeamMatch from "../../../components/tiles/profile/TeamMatch";

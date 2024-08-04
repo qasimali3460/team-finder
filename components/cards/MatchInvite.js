@@ -8,6 +8,10 @@ const MatchInviteCard = ({ teamName, location, date, image, id }) => {
     router.navigate("team");
   };
 
+  const goToInvite = () => {
+    router.navigate("match-invite-detail");
+  };
+
   const cancelInvite = () => {};
 
   return (
@@ -29,7 +33,7 @@ const MatchInviteCard = ({ teamName, location, date, image, id }) => {
         <Text style={styles.location}>{date}</Text>
       </View>
       <View style={styles.cancelWrapper}>
-        <TouchableOpacity onPress={goToProfile}>
+        <TouchableOpacity onPress={goToInvite}>
           <Text style={styles.view}>{"View >"}</Text>
         </TouchableOpacity>
       </View>
