@@ -1,15 +1,7 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { Button, ScrollView, StatusBar, TextField } from "native-base";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { RFValue } from "react-native-responsive-fontsize";
 import {
   battingStyles,
@@ -19,7 +11,6 @@ import {
 import DatePicker from "../../../components/input/datepicker";
 import ProfileImage from "../../../components/input/profile-image";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
-import { FontAwesome } from "@expo/vector-icons";
 import { getMyProfile, updateMyProfile } from "../../../services/user.service";
 import Toast from "react-native-toast-message";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -98,7 +89,7 @@ const EditProfile = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.wrappper}>
+    <ScrollView style={styles.wrapper}>
       <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
       <SafeAreaView style={{ backgroundColor: "white" }}>
         <StatusBar barStyle={"dark-content"} />
@@ -110,6 +101,7 @@ const EditProfile = () => {
           setCover={setCover}
           setImgFile={setImgFile}
           setCoverFile={setCoverFile}
+          readOnly={false}
         />
         <View style={styles.inputWrapper}>
           <View style={styles.fieldWrapper}>
@@ -178,15 +170,7 @@ const EditProfile = () => {
             <Button
               onPress={updateUser}
               isLoading={loading}
-              // disabled={
-              //   !name ||
-              //   !location ||
-              //   !role ||
-              //   !battingStyle ||
-              //   !bowlingStyle ||
-              //   !dateOfBirth ||
-              //   loading
-              // }
+              disabled={loading}
               isLoadingText="Please Wait"
             >
               Updates Profile

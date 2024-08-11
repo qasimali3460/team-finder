@@ -19,7 +19,7 @@ const EditProfile = () => {
         <StatusBar barStyle={"dark-content"} />
         <ScreenHeader />
         <View style={styles.imgOuter}>
-          <ProfileImage uri={img} setUri={setImg} />
+          <ProfileImage uri={img} setUri={setImg} readOnly={false} />
         </View>
         <View style={styles.inputWrapper}>
           <View style={styles.fieldWrapper}>

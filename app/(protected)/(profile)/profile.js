@@ -1,23 +1,23 @@
 import {
-  Image,
+  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
-import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
 import PlayerInfo from "@/components/tiles/profile/Info";
-import { AirbnbRating } from "react-native-ratings";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
 import { getMyProfile } from "../../../services/user.service";
 import Spinner from "react-native-loading-spinner-overlay";
 import Toast from "react-native-toast-message";
 import { currentUserId } from "../../../hooks/hooks";
+import ProfileImage from "../../../components/input/profile-image";
+import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
+import { Button } from "native-base";
 
 const teams = [
   {
@@ -47,10 +47,6 @@ const Profile = () => {
   const [overlay, setOverlay] = useState(false);
   const [userId] = currentUserId();
 
-  const handleGoBack = () => {
-    router.back();
-  };
-
   const editProfile = () => {
     router.navigate("edit-profile");
   };
@@ -76,40 +72,19 @@ const Profile = () => {
 
   return (
     <ScrollView>
-      <View style={styles.wrapper}>
-        <StatusBar barStyle={"light-content"} />
+      <SafeAreaView>
+        <StatusBar barStyle={"dark-content"} />
+        <ScreenHeader title={"User Profile"} />
         <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
-
-        <View style={styles.profileWrapper}>
-          <TouchableOpacity onPress={handleGoBack} style={styles.backIcon}>
-            <AntDesign name="arrowleft" size={20} color="white" />
-          </TouchableOpacity>
-          <View style={styles.picWrapper}>
-            <Image
-              source={{
-                uri: profile?.coverPhoto,
-              }}
-              style={styles.pic}
-            />
-          </View>
-          <View style={styles.infoWrapper}>
-            <View style={styles.teamWrapper}>
-              <Image
-                style={styles.teamLogo}
-                source={{
-                  uri: profile?.profilePicture,
-                }}
-              />
-            </View>
-            <View style={styles.nameWrapper}>
-              <View>
-                <Text style={styles.name}>{profile?.user?.name}</Text>
-              </View>
-              <TouchableOpacity style={styles.follow} onPress={editProfile}>
-                <Text style={styles.followText}>Edit Profile</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+        <ProfileImage
+          uri={profile?.profilePicture}
+          cover={profile?.coverPhoto}
+          readOnly={true}
+        />
+        <View style={styles.editWrapper}>
+          <Button style={styles.editBtn} onPress={editProfile}>
+            Edit Profile
+          </Button>
         </View>
         <View style={styles.otherInfo}>
           <Text style={styles.detailTitle}>Player Detail</Text>
@@ -139,7 +114,7 @@ const Profile = () => {
             })}
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     </ScrollView>
   );
 };
@@ -147,77 +122,12 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
+  editWrapper: {
+    marginVertical: 10,
+    paddingLeft: 20,
   },
-  profileWrapper: {
-    height: 500,
-    flex: 1,
-    position: "relative",
-  },
-  picWrapper: {
-    flex: 1,
-    overflow: "hidden",
-    backgroundColor: "grey",
-  },
-  pic: {
-    flex: 1,
-  },
-  blur: {
-    flex: 1,
-  },
-  infoWrapper: {
-    width: "100%",
-    height: 80,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
-    position: "absolute",
-    bottom: 0,
-    flex: 1,
-    flexDirection: "row",
-  },
-  nameWrapper: {
-    flex: 7,
-    paddingHorizontal: 10,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  name: {
-    fontSize: RFValue(20),
-    fontWeight: "bold",
-  },
-  age: {
-    fontSize: RFValue(12),
-  },
-  teamWrapper: {
-    flex: 2,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  teamLogo: {
-    width: 50,
-    height: 50,
-    borderRadius: 200,
-  },
-  follow: {
-    backgroundColor: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-  },
-  followText: {
-    fontWeight: "bold",
-  },
-  backIcon: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-    zIndex: 1,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "black",
-    padding: 5,
+  editBtn: {
+    width: 100,
   },
   otherInfo: {
     padding: 10,

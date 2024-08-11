@@ -20,6 +20,7 @@ const ProfileImage = ({
 }) => {
   const defaultImage =
     "https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg";
+  const temp = "https://www.samaa.tv/images/pakistan-cricket-team-2.jpg";
   const openImagePicker = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -81,7 +82,7 @@ const ProfileImage = ({
       <View style={{ flex: 1 }}>
         <Image
           source={{
-            uri: cover,
+            uri: cover ?? defaultImage,
           }}
           style={styles.coverPhoto}
         />
@@ -108,6 +109,9 @@ const ProfileImage = ({
             <Image
               style={styles.img}
               source={{ uri: uri ? uri : defaultImage }}
+              // source={{
+              //   uri: "https://crickettimes.com/wp-content/uploads/2023/07/AB-de-Villiers-1.jpg",
+              // }}
             />
           </View>
           {!readOnly && (
