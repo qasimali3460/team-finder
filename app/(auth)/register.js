@@ -13,66 +13,109 @@ import assets from "../../assets/assets";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
+import { register } from "../../services/auth.service";
+import Toast from "react-native-toast-message";
+import { Button } from "native-base";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const goToLogin = () => {
     router.navigate("login");
   };
 
+  const registerUser = () => {
+    setLoading(true);
+    register(name, phone, password)
+      .then((response) => {
+        Toast.show({
+          type: "successToast",
+          text1: "Registered",
+          text2: "Registered succesfully. Please login.",
+          position: "top",
+        });
+        setName("");
+        setPhone("");
+        setPassword("");
+        goToLogin("/");
+      })
+      .catch((e) => {
+        const errorMessage = e?.response?.data?.message ?? "Failed to register";
+        if (errorMessage) {
+          Toast.show({
+            type: "errorToast",
+            text1: "Register error",
+            text2: errorMessage,
+            position: "top",
+          });
+        }
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={"dark-content"} />
-      <ScrollView horizontal={false}>
-        <View style={{ flex: 1 }}>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>Team Finder</Text>
-          </View>
-          <View style={styles.titleWrapper}>
-            <Image source={assets.illustr1} style={styles.illustration} />
-          </View>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.registerHere}>Register Here</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your name"
-              keyboardType="default"
-              autoCapitalize="none"
-              value={name}
-              onChangeText={setName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your phone"
-              keyboardType="number-pad"
-              autoCapitalize="none"
-              value={phone}
-              onChangeText={setPhone}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Register</Text>
-            </TouchableOpacity>
-            <View style={styles.login}>
-              <TouchableOpacity onPress={goToLogin}>
-                <Text style={styles.already}>
-                  Already Have an account ? Login
-                </Text>
-              </TouchableOpacity>
+    <>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle={"dark-content"} />
+        <ScrollView horizontal={false}>
+          <View style={{ flex: 1 }}>
+            <View style={styles.titleWrapper}>
+              <Text style={styles.title}>Team Finder</Text>
+            </View>
+            <View style={styles.titleWrapper}>
+              <Image source={assets.illustr1} style={styles.illustration} />
+            </View>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.registerHere}>Register Here</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your name"
+                keyboardType="default"
+                autoCapitalize="none"
+                value={name}
+                onChangeText={setName}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your phone"
+                keyboardType="number-pad"
+                autoCapitalize="none"
+                value={phone}
+                onChangeText={setPhone}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your password"
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+              />
+              {/* <TouchableOpacity onPress={registerUser} style={styles.button}>
+                <Text style={styles.buttonText}>Register</Text>
+              </TouchableOpacity> */}
+              <Button
+                onPress={registerUser}
+                isLoading={loading}
+                disabled={!name || !phone || !password || loading}
+                isLoadingText="Please Wait"
+              >
+                Register
+              </Button>
+              <View style={styles.login}>
+                <TouchableOpacity onPress={goToLogin}>
+                  <Text style={styles.already}>
+                    Already Have an account ? Login
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </>
   );
 };
 

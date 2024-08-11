@@ -14,14 +14,8 @@ import { router } from "expo-router";
 
 const Welcome = () => {
   const goToLogin = () => {
-    router.navigate("home");
+    router.replace("register");
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      goToLogin();
-    }, 500);
-  }, []);
 
   return (
     <>

@@ -8,9 +8,9 @@ export const preferredRoles = [
   "Wicketkeeper",
 ];
 
-export const battingStyle = ["Right-handed Bat", "Left-handed Bat"];
+export const battingStyles = ["Right-handed Bat", "Left-handed Bat"];
 
-export const bolwingStyle = [
+export const bowlingStyles = [
   "Right-arm Fast",
   "Left-arm Fast",
   "Right-arm Medium",

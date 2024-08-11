@@ -8,18 +8,49 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  Alert,
 } from "react-native";
 import assets from "../../assets/assets";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
+import { Button } from "native-base";
+import { login } from "../../services/auth.service";
+import Toast from "react-native-toast-message";
+import * as SecureStore from "expo-secure-store";
 
 const LoginScreen = () => {
-  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = () => {
-    router.navigate('profile')
+    setLoading(true);
+    login(phone, password)
+      .then(async (response) => {
+        await SecureStore.setItemAsync("token", response?.data?.token);
+        Toast.show({
+          type: "successToast",
+          text1: "Login",
+          text2: "Logged in succesfully.",
+          position: "top",
+        });
+        setPhone("");
+        setPassword("");
+        router.replace("home");
+      })
+      .catch((e) => {
+        const errorMessage = e?.response?.data?.message ?? "Failed to login";
+        if (errorMessage) {
+          Toast.show({
+            type: "errorToast",
+            text1: "Login error",
+            text2: errorMessage,
+            position: "top",
+          });
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -37,11 +68,11 @@ const LoginScreen = () => {
             <Text style={styles.loginHere}>Login Here</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your username"
+              placeholder="Enter your phone number"
               keyboardType="default"
               autoCapitalize="none"
-              value={username}
-              onChangeText={setUsername}
+              value={phone}
+              onChangeText={setPhone}
             />
             <TextInput
               style={styles.input}
@@ -50,9 +81,14 @@ const LoginScreen = () => {
               value={password}
               onChangeText={setPassword}
             />
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
+            <Button
+              onPress={handleLogin}
+              isLoading={loading}
+              disabled={!phone || !password || loading}
+              isLoadingText="Please Wait"
+            >
+              Login
+            </Button>
             <View style={styles.register}>
               <TouchableOpacity onPress={() => router.navigate("register")}>
                 <Text style={styles.already}>

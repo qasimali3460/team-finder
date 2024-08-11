@@ -15,7 +15,7 @@ const tiles = [
   {
     name: "Matches",
     icon: assets.matches,
-    path: "",
+    path: "matches",
     colors: ["hsla(318, 44%, 51%, 1)", "hsla(347, 94%, 48%, 1)"],
   },
   {

@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
   profileWrapper: {
     height: 500,
     flex: 1,
-    backgroundColor: "yellow",
     position: "relative",
   },
   picWrapper: {

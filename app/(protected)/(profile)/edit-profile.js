@@ -1,34 +1,134 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
-import { ScrollView, StatusBar, TextField } from "native-base";
+import { Button, ScrollView, StatusBar, TextField } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RFValue } from "react-native-responsive-fontsize";
-import { preferredRoles } from "../../../constants/players.constant";
+import {
+  battingStyles,
+  bowlingStyles,
+  preferredRoles,
+} from "../../../constants/players.constant";
 import DatePicker from "../../../components/input/datepicker";
 import ProfileImage from "../../../components/input/profile-image";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
+import { FontAwesome } from "@expo/vector-icons";
+import { getMyProfile, updateMyProfile } from "../../../services/user.service";
+import Toast from "react-native-toast-message";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const EditProfile = () => {
   const [img, setImg] = useState("");
+  const [imgFile, setImgFile] = useState("");
+  const [cover, setCover] = useState("");
+  const [coverFile, setCoverFile] = useState("");
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [role, setRole] = useState("");
+  const [battingStyle, setBattingStyle] = useState("");
+  const [bowlingStyle, setBowlingStyle] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
+  const [loading, setLoading] = useState(false);
+  const [overlay, setOverlay] = useState(false);
+
+  const updateUser = () => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("location", location);
+    formData.append("prefferedRole", role);
+    formData.append("battingStyle", battingStyle);
+    formData.append("bowlingStyle", bowlingStyle);
+    formData.append("dob", new Date(dateOfBirth).toLocaleString());
+    if (imgFile) {
+      formData.append("profilePicture", imgFile);
+    }
+    if (coverFile) {
+      formData.append("coverPhoto", coverFile);
+    }
+
+    // formData.append("coverPhoto", cover);
+    setLoading(true);
+    updateMyProfile(formData)
+      .then((response) => {
+        Toast.show({
+          type: "successToast",
+          text1: "Profile",
+          text2: "Profile updated succesfully.",
+          position: "top",
+        });
+      })
+      .catch((e) => {
+        console.log("e: ", e);
+        const errorMessage =
+          e?.response?.data?.message || e?.response?.data || "Failed to update";
+        if (errorMessage) {
+          Toast.show({
+            type: "errorToast",
+            text1: "Profile update error",
+            text2: errorMessage,
+            position: "top",
+          });
+        }
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    setOverlay(true);
+    getMyProfile()
+      .then((response) => {
+        const profile = response?.data?.data;
+        setName(profile?.user?.name);
+        setLocation(profile?.location);
+        setRole(profile?.prefferedRole);
+        setBowlingStyle(profile?.bowlingStyle);
+        setBattingStyle(profile?.battingStyle);
+        setImg(profile?.profilePicture);
+        setDateOfBirth(new Date(profile?.dob));
+        setCover(profile?.coverPhoto);
+      })
+      .finally(() => setOverlay(false));
+  }, []);
 
   return (
     <ScrollView style={styles.wrappper}>
-      <SafeAreaView>
+      <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
+      <SafeAreaView style={{ backgroundColor: "white" }}>
         <StatusBar barStyle={"dark-content"} />
-        <ScreenHeader />
-        <View style={styles.imgOuter}>
-          <ProfileImage uri={img} setUri={setImg} />
-        </View>
+        <ScreenHeader title={"Edit Profile"} />
+        <ProfileImage
+          uri={img}
+          setUri={setImg}
+          cover={cover}
+          setCover={setCover}
+          setImgFile={setImgFile}
+          setCoverFile={setCoverFile}
+        />
         <View style={styles.inputWrapper}>
           <View style={styles.fieldWrapper}>
             <Text style={styles.fieldTitle}>Name</Text>
-            <TextField placeholder="Enter your name" name="name" />
+            <TextField
+              value={name}
+              onChangeText={(value) => setName(value)}
+              placeholder="Enter your name"
+              name="name"
+            />
           </View>
           <View style={styles.fieldWrapper}>
             <Text style={styles.fieldTitle}>Location</Text>
-            <TextField placeholder="Enter your location" name="location" />
+            <TextField
+              value={location}
+              onChangeText={(value) => setLocation(value)}
+              placeholder="Enter your location"
+              name="location"
+            />
           </View>
           <View style={styles.fieldWrapper}>
             <Text style={styles.fieldTitle}>Date Of Birth</Text>
@@ -37,8 +137,8 @@ const EditProfile = () => {
           <View style={[styles.fieldWrapper, { paddingTop: 10 }]}>
             <Text style={styles.fieldTitle}>Prefferred Role</Text>
             <Picker
-              selectedValue={"java"}
-              onValueChange={(itemValue, itemIndex) => {}}
+              selectedValue={role}
+              onValueChange={(itemValue) => setRole(itemValue)}
               style={styles.picker}
             >
               {preferredRoles.map((role) => (
@@ -49,11 +149,13 @@ const EditProfile = () => {
           <View style={styles.fieldWrapper}>
             <Text style={styles.fieldTitle}>Batting Style</Text>
             <Picker
-              selectedValue={"java"}
-              onValueChange={(itemValue, itemIndex) => {}}
+              selectedValue={battingStyle}
+              onValueChange={(itemValue, itemIndex) =>
+                setBattingStyle(itemValue)
+              }
               style={styles.picker}
             >
-              {preferredRoles.map((role) => (
+              {battingStyles.map((role) => (
                 <Picker.Item label={role} value={role} />
               ))}
             </Picker>
@@ -61,14 +163,34 @@ const EditProfile = () => {
           <View style={styles.fieldWrapper}>
             <Text style={styles.fieldTitle}>Bowling Style</Text>
             <Picker
-              selectedValue={"java"}
-              onValueChange={(itemValue, itemIndex) => {}}
+              selectedValue={bowlingStyle}
+              onValueChange={(itemValue, itemIndex) =>
+                setBowlingStyle(itemValue)
+              }
               style={styles.picker}
             >
-              {preferredRoles.map((role) => (
+              {bowlingStyles.map((role) => (
                 <Picker.Item label={role} value={role} />
               ))}
             </Picker>
+          </View>
+          <View style={styles.fieldWrapper}>
+            <Button
+              onPress={updateUser}
+              isLoading={loading}
+              // disabled={
+              //   !name ||
+              //   !location ||
+              //   !role ||
+              //   !battingStyle ||
+              //   !bowlingStyle ||
+              //   !dateOfBirth ||
+              //   loading
+              // }
+              isLoadingText="Please Wait"
+            >
+              Updates Profile
+            </Button>
           </View>
         </View>
       </SafeAreaView>
@@ -82,12 +204,8 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
   },
-  imgOuter: {
-    height: 300,
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
   inputWrapper: {
+    marginTop: 50,
     paddingVertical: 5,
     paddingHorizontal: 20,
   },

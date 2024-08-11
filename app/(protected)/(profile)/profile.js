@@ -7,13 +7,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
 import PlayerInfo from "@/components/tiles/profile/Info";
 import { AirbnbRating } from "react-native-ratings";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
+import { getMyProfile } from "../../../services/user.service";
+import Spinner from "react-native-loading-spinner-overlay";
+import Toast from "react-native-toast-message";
+import { currentUserId } from "../../../hooks/hooks";
 
 const teams = [
   {
@@ -39,6 +43,10 @@ const teams = [
 ];
 
 const Profile = () => {
+  const [profile, setProfile] = useState(null);
+  const [overlay, setOverlay] = useState(false);
+  const [userId] = currentUserId();
+
   const handleGoBack = () => {
     router.back();
   };
@@ -47,10 +55,31 @@ const Profile = () => {
     router.navigate("edit-profile");
   };
 
+  useEffect(() => {
+    setOverlay(true);
+    getMyProfile()
+      .then((response) => {
+        const profile = response?.data?.data;
+        setProfile(profile);
+      })
+      .catch((e) => {
+        console.log("e: ", e);
+        Toast.show({
+          type: "errorToast",
+          text1: "Profile error",
+          text2: "Failed to fetch profile",
+          position: "top",
+        });
+      })
+      .finally(() => setOverlay(false));
+  }, []);
+
   return (
     <ScrollView>
       <View style={styles.wrapper}>
         <StatusBar barStyle={"light-content"} />
+        <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
+
         <View style={styles.profileWrapper}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backIcon}>
             <AntDesign name="arrowleft" size={20} color="white" />
@@ -58,7 +87,7 @@ const Profile = () => {
           <View style={styles.picWrapper}>
             <Image
               source={{
-                uri: "https://img.etimg.com/thumb/width-1200,height-900,imgsize-114692,resizemode-75,msid-99277719/news/sports/virat-looks-relaxed-after-giving-away-the-captaincy-in-ipl-and-international-cricket-says-ab-de-villiers.jpg",
+                uri: profile?.coverPhoto,
               }}
               style={styles.pic}
             />
@@ -68,21 +97,13 @@ const Profile = () => {
               <Image
                 style={styles.teamLogo}
                 source={{
-                  uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnuSx2cKVOcF8WXVHLHF2VbM-_nJnGj-654g&s",
+                  uri: profile?.profilePicture,
                 }}
               />
             </View>
             <View style={styles.nameWrapper}>
               <View>
-                <Text style={styles.name}>Meer Hamza</Text>
-                <AirbnbRating
-                  count={5}
-                  defaultRating={4}
-                  showRating={false}
-                  size={20}
-                />
-                {/* <Text style={styles.age}>Right Hand Batsman</Text>
-                        <Text style={styles.age}>25 Year</Text> */}
+                <Text style={styles.name}>{profile?.user?.name}</Text>
               </View>
               <TouchableOpacity style={styles.follow} onPress={editProfile}>
                 <Text style={styles.followText}>Edit Profile</Text>
@@ -93,11 +114,17 @@ const Profile = () => {
         <View style={styles.otherInfo}>
           <Text style={styles.detailTitle}>Player Detail</Text>
           <View>
-            <PlayerInfo title={"Age"} value={"25 years"} />
-            <PlayerInfo title={"Location"} value="Sialkot, Punjab" />
-            <PlayerInfo title={"Preferred Role"} value="All rounders" />
-            <PlayerInfo title={"Batting style"} value="Right hand batsman" />
-            <PlayerInfo title={"Bowling style"} value="Medium fast" />
+            <PlayerInfo
+              title={"Age"}
+              value={new Date(profile?.dob).toLocaleDateString()}
+            />
+            <PlayerInfo title={"Location"} value={profile?.location} />
+            <PlayerInfo
+              title={"Preferred Role"}
+              value={profile?.prefferedRole}
+            />
+            <PlayerInfo title={"Batting style"} value={profile?.battingStyle} />
+            <PlayerInfo title={"Bowling style"} value={profile?.bowlingStyle} />
           </View>
         </View>
         <View style={[styles.otherInfo, { marginTop: 20 }]}>
@@ -126,12 +153,12 @@ const styles = StyleSheet.create({
   profileWrapper: {
     height: 500,
     flex: 1,
-    backgroundColor: "yellow",
     position: "relative",
   },
   picWrapper: {
     flex: 1,
     overflow: "hidden",
+    backgroundColor: "grey",
   },
   pic: {
     flex: 1,
