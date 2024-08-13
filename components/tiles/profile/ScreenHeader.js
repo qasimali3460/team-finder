@@ -10,7 +10,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
 
-const ScreenHeader = ({ handleDone, title, showDone }) => {
+const ScreenHeader = ({ handleDone, title, showDone, doneIcon }) => {
   const handleGoBack = () => {
     router.back();
   };
@@ -22,7 +22,7 @@ const ScreenHeader = ({ handleDone, title, showDone }) => {
       <Text style={styles.title}>{title}</Text>
       {showDone ? (
         <TouchableOpacity onPress={handleDone}>
-          <Text style={styles.action}>Done</Text>
+          {doneIcon ? doneIcon : <Text style={styles.action}>Done</Text>}
         </TouchableOpacity>
       ) : (
         <Text></Text>

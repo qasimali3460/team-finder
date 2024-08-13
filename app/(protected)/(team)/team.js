@@ -1,21 +1,25 @@
 import {
-  Image,
+  Alert,
+  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
-import { AntDesign } from "@expo/vector-icons";
 import { router } from "expo-router";
 import PlayerInfo from "@/components/tiles/profile/Info";
-import { AirbnbRating } from "react-native-ratings";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
-import TeamMatch from "../../../components/tiles/profile/TeamMatch";
-import TimelineCalendarScreen from "../../../components/input/timeline";
+import { getMyProfile } from "../../../services/user.service";
+import Spinner from "react-native-loading-spinner-overlay";
+import Toast from "react-native-toast-message";
+import { currentUserId } from "../../../hooks/hooks";
+import ProfileImage from "../../../components/input/profile-image";
+import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
+import { Button } from "native-base";
+import { getMyTeam } from "../../../services/team.service";
 
 const teams = [
   {
@@ -23,7 +27,7 @@ const teams = [
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMSYerJFUDA_P0_YKm0tizI0kogAj6wXxzWQ&s",
   },
   {
-    title: "Lahore Qalander",
+    title: "Lahore Qalanders",
     logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtlgBlQvIzJZ4u8R8lcGNlD0pyG5lUPiH9rA&s",
   },
   {
@@ -41,68 +45,76 @@ const teams = [
 ];
 
 const Profile = () => {
-  const handleGoBack = () => {
-    router.back();
-  };
+  const [profile, setProfile] = useState(null);
+  const [overlay, setOverlay] = useState(false);
+  const [userId] = currentUserId();
 
-  const editProfile = () => {
+  const editTeam = () => {
     router.navigate("edit-team");
   };
 
+  useEffect(() => {
+    setOverlay(true);
+    getMyTeam()
+      .then((response) => {
+        const profile = response?.data?.data;
+        setProfile(profile);
+      })
+      .catch((e) => {
+        console.log("e: ", e);
+        Toast.show({
+          type: "errorToast",
+          text1: "Team error",
+          text2: "Failed to fetch team",
+          position: "top",
+        });
+      })
+      .finally(() => setOverlay(false));
+  }, []);
+
   return (
     <ScrollView>
-      <View style={styles.wrapper}>
-        <StatusBar barStyle={"light-content"} />
-        <View style={styles.profileWrapper}>
-          <TouchableOpacity onPress={handleGoBack} style={styles.backIcon}>
-            <AntDesign name="arrowleft" size={20} color="white" />
-          </TouchableOpacity>
-          <View style={styles.picWrapper}>
-            <Image
-              source={{
-                uri: "https://media.licdn.com/dms/image/sync/D5627AQFXZbWf9v3nDw/articleshare-shrink_800/0/1712261825109?e=2147483647&v=beta&t=t5DfAaQ-4ZX1bazhoh1MXNxJoFZuNzyLJP9nXOIfc7E",
-              }}
-              style={styles.pic}
-            />
-          </View>
-          <View style={styles.infoWrapper}>
-            <View style={styles.teamWrapper}>
-              <Image
-                style={styles.teamLogo}
-                source={{
-                  uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnuSx2cKVOcF8WXVHLHF2VbM-_nJnGj-654g&s",
-                }}
-              />
-            </View>
-            <View style={styles.nameWrapper}>
-              <View style={{ alignItems: "flex-start" }}>
-                <Text style={styles.name}>Sialkot Team</Text>
-                <AirbnbRating
-                  count={5}
-                  defaultRating={4}
-                  showRating={false}
-                  size={20}
-                />
-              </View>
-              <TouchableOpacity style={styles.follow} onPress={editProfile}>
-                <Text style={styles.followText}>Edit Team</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+      <SafeAreaView>
+        <StatusBar barStyle={"dark-content"} />
+        <ScreenHeader title={"Team Detail"} />
+        <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
+        <ProfileImage
+          uri={profile?.profilePicture}
+          cover={profile?.coverPhoto}
+          readOnly={true}
+        />
+        <View style={styles.editWrapper}>
+          <Button style={styles.editBtn} onPress={editTeam}>
+            Edit Team
+          </Button>
         </View>
         <View style={styles.otherInfo}>
           <Text style={styles.detailTitle}>Team Detail</Text>
           <View>
-            <PlayerInfo title={"Location"} value="Sialkot, Punjab" />
+            <PlayerInfo title={"Team name"} value={profile?.teamName} />
+            <PlayerInfo
+              title={"Description"}
+              value={
+                "this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion"
+              }
+            />
+            <PlayerInfo title={"Address"} value={profile?.address} />
+            <PlayerInfo title={"Team type"} value={profile?.teamType} />
           </View>
         </View>
         <View style={[styles.otherInfo, { marginTop: 20 }]}>
-          <Text style={styles.detailTitle}>Schedule</Text>
+          <Text style={styles.detailTitle}>Upcoming Matches</Text>
           <View style={styles.teamsSection}>
-            <TimelineCalendarScreen />
+            {/* {teams.map((team, key) => {
+              return (
+                <View key={key} style={styles.otherTeamWrapper}>
+                  <TeamTile title={team.title} logo={team.logo} />
+                </View>
+              );
+            })} */}
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     </ScrollView>
   );
 };
@@ -110,88 +122,23 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
+  editWrapper: {
+    marginVertical: 10,
+    paddingLeft: 20,
   },
-  profileWrapper: {
-    height: 500,
-    flex: 1,
-    position: "relative",
-  },
-  picWrapper: {
-    flex: 1,
-    overflow: "hidden",
-  },
-  pic: {
-    flex: 1,
-  },
-  blur: {
-    flex: 1,
-  },
-  infoWrapper: {
-    width: "100%",
-    height: 80,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
-    position: "absolute",
-    bottom: 0,
-    flex: 1,
-    flexDirection: "row",
-  },
-  nameWrapper: {
-    flex: 7,
-    paddingHorizontal: 10,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  name: {
-    fontSize: RFValue(20),
-    fontWeight: "bold",
-  },
-  age: {
-    fontSize: RFValue(12),
-  },
-  teamWrapper: {
-    flex: 2,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  teamLogo: {
-    width: 50,
-    height: 50,
-    borderRadius: 200,
-  },
-  follow: {
-    backgroundColor: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-  },
-  followText: {
-    fontWeight: "bold",
-  },
-  backIcon: {
-    position: "absolute",
-    top: 50,
-    left: 20,
-    zIndex: 1,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "black",
-    padding: 5,
+  editBtn: {
+    width: 100,
   },
   otherInfo: {
     padding: 10,
-    backgroundColor: "white",
   },
   detailTitle: {
     fontSize: RFValue(20),
     fontWeight: "bold",
   },
   teamsSection: {
-    flex: 1,
-    marginTop: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   otherTeamWrapper: {
     width: "50%",

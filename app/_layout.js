@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { router, Stack } from "expo-router";
+import { Redirect, router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { NativeBaseProvider } from "native-base";
@@ -141,11 +141,7 @@ export default function RootLayout() {
   const [token, isTokenLoaded] = getAuth();
 
   useEffect(() => {
-    console.log("isTokenLoaded: ", loaded, token, isTokenLoaded);
     if (loaded && isTokenLoaded) {
-      if (token) {
-        router.replace("home");
-      }
       SplashScreen.hideAsync();
     }
   }, [loaded, token]);
@@ -156,6 +152,7 @@ export default function RootLayout() {
 
   return (
     <NativeBaseProvider>
+      {token && isTokenLoaded && <Redirect href="home" />}
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(welcome)" options={{ headerShown: false }} />
       </Stack>

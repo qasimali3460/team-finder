@@ -10,6 +10,8 @@ export const preferredRoles = [
 
 export const battingStyles = ["Right-handed Bat", "Left-handed Bat"];
 
+export const teamTypes = ["Tape ball", "Hard ball", "Both tape and hard"];
+
 export const bowlingStyles = [
   "Right-arm Fast",
   "Left-arm Fast",

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -13,6 +14,9 @@ import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Pending from "./Pending";
 import Players from "./Players";
+import { FontAwesome } from "@expo/vector-icons";
+import InviteUser from "./invite-user";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const initialLayout = {
   width: Dimensions.get("window").width,
@@ -24,8 +28,9 @@ const renderScene = SceneMap({
 });
 
 function Tabs() {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [routes] = useState([
     {
       key: "first",
       title: "Active",
@@ -101,11 +106,36 @@ function Tabs() {
 }
 
 export default () => {
+  const bottomSheetRef = useRef();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
         <StatusBar barStyle={"dark-content"} />
-        <ScreenHeader title="Team members" />
+        <ScreenHeader
+          title="Team members"
+          showDone={true}
+          doneIcon={<FontAwesome name="user-plus" size={24} color="black" />}
+          handleDone={() => {
+            bottomSheetRef.current.open();
+          }}
+        />
+        <RBSheet
+          RBSheet
+          ref={bottomSheetRef}
+          draggable
+          dragOnContent
+          height={400}
+          customStyles={{
+            container: styles.sheetContainer,
+          }}
+        >
+          <InviteUser
+            closeDialog={() => {
+              bottomSheetRef.current.close();
+            }}
+          />
+        </RBSheet>
         <Tabs />
       </View>
     </SafeAreaView>
@@ -135,4 +165,5 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 3,
   },
+  sheetContainer: { borderTopLeftRadius: 50, borderTopRightRadius: 50 },
 });
