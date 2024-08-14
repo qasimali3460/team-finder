@@ -44,6 +44,12 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="my-invites"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

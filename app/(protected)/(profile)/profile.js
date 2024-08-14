@@ -47,7 +47,7 @@ const teams = [
   },
 ];
 
-const Profile = ({ route }) => {
+const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [overlay, setOverlay] = useState(false);
   const [currentUserId] = currentSession();

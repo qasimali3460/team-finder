@@ -35,7 +35,7 @@ const Players = () => {
         keyExtractor={(item) => item.inviteId}
         contentContainerStyle={styles.list}
         numColumns={1}
-        onRefresh={getSentInvites}
+        onRefresh={getInvites}
         refreshing={loading}
       />
     </View>

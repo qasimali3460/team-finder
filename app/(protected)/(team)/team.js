@@ -19,7 +19,8 @@ import { currentSession } from "../../../hooks/hooks";
 import ProfileImage from "../../../components/input/profile-image";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { Button } from "native-base";
-import { getMyTeam } from "../../../services/team.service";
+import { getMyTeam, getOtherTeamDetail } from "../../../services/team.service";
+import { useRoute } from "@react-navigation/native";
 
 const teams = [
   {
@@ -46,30 +47,54 @@ const teams = [
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
+  console.log("profile: ", profile);
   const [overlay, setOverlay] = useState(false);
   const [userId] = currentSession();
+  const myRoute = useRoute();
 
   const editTeam = () => {
     router.navigate("edit-team");
   };
 
   useEffect(() => {
+    let teamId = null;
+    if (myRoute.params.teamId) {
+      teamId = myRoute.params.teamId;
+    }
     setOverlay(true);
-    getMyTeam()
-      .then((response) => {
-        const profile = response?.data?.data;
-        setProfile(profile);
-      })
-      .catch((e) => {
-        console.log("e: ", e);
-        Toast.show({
-          type: "errorToast",
-          text1: "Team error",
-          text2: "Failed to fetch team",
-          position: "top",
-        });
-      })
-      .finally(() => setOverlay(false));
+    if (!teamId) {
+      getMyTeam()
+        .then((response) => {
+          const profile = response?.data?.data;
+          setProfile(profile);
+        })
+        .catch((e) => {
+          console.log("e: ", e);
+          Toast.show({
+            type: "errorToast",
+            text1: "Team error",
+            text2: "Failed to fetch team",
+            position: "top",
+          });
+        })
+        .finally(() => setOverlay(false));
+    } else {
+      getOtherTeamDetail(teamId)
+        .then((response) => {
+          const profile = response?.data?.data;
+          setProfile(profile);
+        })
+        .catch((e) => {
+          console.log("e: ", e);
+          Toast.show({
+            type: "errorToast",
+            text1: "Team error",
+            text2: "Failed to fetch team",
+            position: "top",
+          });
+        })
+        .finally(() => setOverlay(false));
+    }
   }, []);
 
   return (
@@ -84,20 +109,17 @@ const Profile = () => {
           readOnly={true}
         />
         <View style={styles.editWrapper}>
-          <Button style={styles.editBtn} onPress={editTeam}>
-            Edit Team
-          </Button>
+          {profile?.user?._id && (
+            <Button style={styles.editBtn} onPress={editTeam}>
+              Edit Team
+            </Button>
+          )}
         </View>
         <View style={styles.otherInfo}>
           <Text style={styles.detailTitle}>Team Detail</Text>
           <View>
             <PlayerInfo title={"Team name"} value={profile?.teamName} />
-            <PlayerInfo
-              title={"Description"}
-              value={
-                "this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion this is a very very long descritpion"
-              }
-            />
+            <PlayerInfo title={"Description"} value={profile?.description} />
             <PlayerInfo title={"Address"} value={profile?.address} />
             <PlayerInfo title={"Team type"} value={profile?.teamType} />
           </View>
