@@ -4,7 +4,7 @@ import { TextInput, View, StyleSheet, Text, Keyboard } from "react-native";
 import { sendInvite } from "../../../services/team.service";
 import Toast from "react-native-toast-message";
 
-const InviteUser = ({ closeDialog }) => {
+const InviteUser = ({ closeDialog, refreshInvites }) => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,6 +24,7 @@ const InviteUser = ({ closeDialog }) => {
         });
         setPhone("");
         setMessage("");
+        refreshInvites?.();
       })
       .catch((e) => {
         closeDialog?.();

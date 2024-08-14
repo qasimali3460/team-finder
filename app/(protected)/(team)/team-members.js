@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -17,6 +17,8 @@ import Players from "./Players";
 import { FontAwesome } from "@expo/vector-icons";
 import InviteUser from "./invite-user";
 import RBSheet from "react-native-raw-bottom-sheet";
+import TeamMembersContext from "../../../hooks/teamMembers";
+import { getSentInvites } from "../../../services/team.service";
 
 const initialLayout = {
   width: Dimensions.get("window").width,
@@ -108,6 +110,22 @@ function Tabs() {
 export default () => {
   const bottomSheetRef = useRef();
 
+  const [invites, setInvites] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getInvites();
+  }, []);
+
+  const getInvites = () => {
+    setLoading(true);
+    getSentInvites()
+      .then((response) => {
+        setInvites(response?.data?.invites ?? []);
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
@@ -131,12 +149,15 @@ export default () => {
           }}
         >
           <InviteUser
+            refreshInvites={getInvites}
             closeDialog={() => {
               bottomSheetRef.current.close?.();
             }}
           />
         </RBSheet>
-        <Tabs />
+        <TeamMembersContext.Provider value={{ invites, loading, getInvites }}>
+          <Tabs />
+        </TeamMembersContext.Provider>
       </View>
     </SafeAreaView>
   );

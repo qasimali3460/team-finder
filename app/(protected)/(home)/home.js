@@ -42,6 +42,12 @@ const tiles = [
     path: "match-invites",
     colors: ["hsla(52, 43%, 55%, 1)", "hsla(51, 33%, 75%, 1)"],
   },
+  {
+    name: "My Invites",
+    icon: assets.invites,
+    path: "my-invites",
+    colors: ["hsla(52, 43%, 55%, 1)", "hsla(51, 33%, 75%, 1)"],
+  },
 ];
 
 const handlePress = (path) => {

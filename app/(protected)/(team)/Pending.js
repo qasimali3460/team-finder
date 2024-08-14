@@ -1,26 +1,14 @@
 import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { teamMembers } from "../../../constants/players.constant";
 import PendingPlayer from "../../../components/cards/PendingPlayer";
 import { cancelInvite, getSentInvites } from "../../../services/team.service";
 import Toast from "react-native-toast-message";
+import TeamMembersContext from "../../../hooks/teamMembers";
+import { theme } from "native-base";
 
 const Players = () => {
-  const [players, setPlayers] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    getInvites();
-  }, []);
-
-  const getInvites = () => {
-    setLoading(true);
-    getSentInvites()
-      .then((response) => {
-        setPlayers(response?.data?.invites ?? []);
-      })
-      .finally(() => setLoading(false));
-  };
+  const { invites, getInvites, loading } = useContext(TeamMembersContext);
 
   const handleCancelInvite = (inviteId) => {
     cancelInvite(inviteId)
@@ -40,7 +28,7 @@ const Players = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={players}
+        data={invites}
         renderItem={({ item }) => (
           <PendingPlayer onCancel={handleCancelInvite} {...item} />
         )}
