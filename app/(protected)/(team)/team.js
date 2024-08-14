@@ -15,7 +15,7 @@ import TeamTile from "../../../components/tiles/profile/TeamTile";
 import { getMyProfile } from "../../../services/user.service";
 import Spinner from "react-native-loading-spinner-overlay";
 import Toast from "react-native-toast-message";
-import { currentUserId } from "../../../hooks/hooks";
+import { currentSession } from "../../../hooks/hooks";
 import ProfileImage from "../../../components/input/profile-image";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { Button } from "native-base";
@@ -47,7 +47,7 @@ const teams = [
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [overlay, setOverlay] = useState(false);
-  const [userId] = currentUserId();
+  const [userId] = currentSession();
 
   const editTeam = () => {
     router.navigate("edit-team");

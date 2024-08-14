@@ -16,7 +16,7 @@ export function getAuth() {
   return [token, isTokenLoaded];
 }
 
-export function currentUserId() {
+export function currentSession() {
   const [userId, setUserId] = useState(null);
   useEffect(() => {
     try {

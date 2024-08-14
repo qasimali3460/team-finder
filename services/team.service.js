@@ -19,3 +19,11 @@ export function updateMyTeam(formData) {
 export function sendInvite(phone, message) {
   return axios.post(`/team/invite`, { phone, message });
 }
+
+export function getSentInvites() {
+  return axios.get(`/team/myInvitations`);
+}
+
+export function cancelInvite(invitationId) {
+  return axios.post(`/team/decline`, { invitationId });
+}

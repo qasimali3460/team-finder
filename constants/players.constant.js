@@ -23,6 +23,9 @@ export const bowlingStyles = [
   "Slow Left-arm Orthodox",
 ];
 
+export const defaultPlayerImage =
+  "https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg";
+
 export const teamMembers = [
   { image: assets.player1, id: "1", name: "John Doe", role: "Batsman" },
   { image: assets.player1, id: "2", name: "Jane Smith", role: "Bowler" },

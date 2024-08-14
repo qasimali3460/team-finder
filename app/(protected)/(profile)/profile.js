@@ -1,4 +1,5 @@
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -8,16 +9,20 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import PlayerInfo from "@/components/tiles/profile/Info";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
-import { getMyProfile } from "../../../services/user.service";
+import {
+  getMyProfile,
+  getOtherUserProfile,
+} from "../../../services/user.service";
 import Spinner from "react-native-loading-spinner-overlay";
 import Toast from "react-native-toast-message";
-import { currentUserId } from "../../../hooks/hooks";
+import { currentSession } from "../../../hooks/hooks";
 import ProfileImage from "../../../components/input/profile-image";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { Button } from "native-base";
+import { useRoute } from "@react-navigation/native";
 
 const teams = [
   {
@@ -42,33 +47,67 @@ const teams = [
   },
 ];
 
-const Profile = () => {
+const Profile = ({ route }) => {
   const [profile, setProfile] = useState(null);
   const [overlay, setOverlay] = useState(false);
-  const [userId] = currentUserId();
+  const [currentUserId] = currentSession();
+  const myRoute = useRoute();
 
   const editProfile = () => {
     router.navigate("edit-profile");
   };
 
   useEffect(() => {
-    setOverlay(true);
-    getMyProfile()
-      .then((response) => {
-        const profile = response?.data?.data;
-        setProfile(profile);
-      })
-      .catch((e) => {
-        console.log("e: ", e);
-        Toast.show({
-          type: "errorToast",
-          text1: "Profile error",
-          text2: "Failed to fetch profile",
-          position: "top",
-        });
-      })
-      .finally(() => setOverlay(false));
-  }, []);
+    if (currentUserId) {
+      let userId = null;
+      let isMine = true;
+      if (myRoute.params.userId) {
+        userId = myRoute.params.userId;
+        if (userId !== currentUserId) {
+          isMine = false;
+        }
+      } else {
+        userId = currentUserId;
+      }
+      console.log(userId, isMine, currentUserId);
+      setOverlay(true);
+      if (isMine) {
+        getMyProfile()
+          .then((response) => {
+            const profile = response?.data?.data;
+            console.log("profile: ", profile);
+            setProfile(profile);
+          })
+          .catch((e) => {
+            console.log("e: ", e);
+            Toast.show({
+              type: "errorToast",
+              text1: "Profile error",
+              text2: "Failed to fetch profile",
+              position: "top",
+            });
+          })
+          .finally(() => setOverlay(false));
+      } else {
+        getOtherUserProfile(userId)
+          .then((response) => {
+            console.log("response: ", response);
+            const profile = response?.data?.data;
+            setProfile(profile);
+          })
+          .catch((e) => {
+            console.log("e: ", e);
+            Toast.show({
+              type: "errorToast",
+              text1: "Profile error",
+              text2: "Failed to fetch profile",
+              position: "top",
+            });
+          })
+          .finally(() => setOverlay(false));
+      }
+    }
+  }, [currentUserId]);
 
   return (
     <ScrollView>

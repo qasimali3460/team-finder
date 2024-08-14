@@ -132,7 +132,7 @@ export default () => {
         >
           <InviteUser
             closeDialog={() => {
-              bottomSheetRef.current.close();
+              bottomSheetRef.current.close?.();
             }}
           />
         </RBSheet>

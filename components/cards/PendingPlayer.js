@@ -9,10 +9,19 @@ import {
 import React from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
+import { defaultPlayerImage } from "../../constants/players.constant";
 
-const PendingPlayerCard = ({ name, role, image, id }) => {
+const PendingPlayerCard = ({
+  name,
+  role,
+  profilePicture,
+  message,
+  inviteId,
+  userId,
+  onCancel,
+}) => {
   const goToProfile = () => {
-    router.navigate("profile");
+    router.navigate({ pathname: "profile", params: { userId } });
   };
 
   const cancelInvite = () => {
@@ -22,17 +31,22 @@ const PendingPlayerCard = ({ name, role, image, id }) => {
         onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
-      { text: "Yes", onPress: () => n.log("OK Pressed") },
+      { text: "Yes", onPress: () => onCancel?.(inviteId) },
     ]);
   };
 
   return (
     <TouchableOpacity onPress={goToProfile} style={styles.card}>
       <View style={styles.imgWrapper}>
-        <Image source={image} style={styles.img} />
+        <Image
+          source={{ uri: profilePicture ?? defaultPlayerImage }}
+          style={styles.img}
+        />
       </View>
       <View style={styles.detail}>
-        <Text style={styles.name}>{name}</Text>
+        <Text numberOfLines={1} style={styles.name}>
+          {name}
+        </Text>
         <Text style={styles.role}>{role}</Text>
       </View>
       <View style={styles.cancelWrapper}>
@@ -80,6 +94,8 @@ const styles = StyleSheet.create({
     height: 50,
     objectFit: "cover",
     borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "grey",
   },
   detail: {
     padding: 10,
