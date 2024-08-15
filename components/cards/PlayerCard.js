@@ -3,18 +3,22 @@ import React from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
 
-const PlayerCard = ({ name, role, image, id }) => {
+const PlayerCard = ({ isLast, name, battingStyle, profilePicture, _id }) => {
+  console.log("isLast: ", isLast);
   const goToProfile = () => {
-    router.navigate("profile");
+    router.navigate({ pathname: "profile", params: { userId: _id } });
   };
   return (
-    <TouchableOpacity onPress={goToProfile} style={styles.card}>
+    <TouchableOpacity
+      onPress={goToProfile}
+      style={[styles.card, { flex: isLast ? 0.5 : 1 }]}
+    >
       <View style={styles.imgWrapper}>
-        <Image source={image} style={styles.img} />
+        <Image source={{ uri: profilePicture }} style={styles.img} />
       </View>
       <View style={styles.detail}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.role}>{role}</Text>
+        <Text style={styles.role}>{battingStyle}</Text>
       </View>
     </TouchableOpacity>
   );

@@ -39,3 +39,7 @@ export function cancelInvite(invitationId) {
 export function acceptInvite(invitationId) {
   return axios.post(`/team/accept`, { invitationId });
 }
+
+export function getMyTeamMembers() {
+  return axios.get(`/team/teamMembers`);
+}
