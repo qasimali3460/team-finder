@@ -4,7 +4,6 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
 
 const PlayerCard = ({ isLast, name, battingStyle, profilePicture, _id }) => {
-  console.log("isLast: ", isLast);
   const goToProfile = () => {
     router.navigate({ pathname: "profile", params: { userId: _id } });
   };

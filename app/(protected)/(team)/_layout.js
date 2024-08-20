@@ -50,6 +50,12 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="find-teams"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

@@ -9,7 +9,7 @@ const tiles = [
   {
     name: "Find Team",
     icon: assets.search,
-    path: "",
+    path: "find-teams",
     colors: ["hsla(159, 82%, 55%, 1)", "hsla(206, 98%, 48%, 1)"],
   },
   {

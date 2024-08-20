@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getItem } from "expo-secure-store";
 
-const BASE_URL = "http://192.168.1.8:5000/api/v1";
+const BASE_URL = "http://192.168.1.28:5000/api/v1";
 
 const instance = axios.create({
   baseURL: BASE_URL,

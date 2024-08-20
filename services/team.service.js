@@ -43,3 +43,27 @@ export function acceptInvite(invitationId) {
 export function getMyTeamMembers() {
   return axios.get(`/team/teamMembers`);
 }
+
+export function getNearbyTeams(search, longitude, latitude) {
+  return axios.get(`/team/nearby`, {
+    params: { longitude, latitude, page: 1, limit: 100, search },
+  });
+}
+
+export function sendMatchInvite(
+  toTeam,
+  matchDate,
+  matchType,
+  overs,
+  location,
+  message
+) {
+  return axios.post(`/match/invite`, {
+    toTeam,
+    matchDate,
+    matchType,
+    overs,
+    location,
+    message,
+  });
+}
