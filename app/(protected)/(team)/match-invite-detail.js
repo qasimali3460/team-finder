@@ -1,6 +1,6 @@
 // Profile.js
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -11,21 +11,31 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  Alert,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
 import PlayerInfo from "../../../components/tiles/profile/Info";
 import assets from "../../../assets/assets";
 import { Button } from "native-base";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DiscussionWidget from "./DiscussionWidget";
+import { useRoute } from "@react-navigation/native";
+import { getInviteMessages } from "../../../services/match.service";
 
-const Profile = () => {
-  const handleGoBack = () => {
-    router.back();
-  };
+const MatchInviteDetail = () => {
+  const myRoute = useRoute();
+  const {
+    inviteId,
+    teamName,
+    profilePicture,
+    location,
+    date,
+    matchType,
+    overs,
+  } = myRoute.params;
 
   return (
     <ScrollView>
@@ -34,7 +44,7 @@ const Profile = () => {
         <ScreenHeader title="Invite Detail" />
         <View style={styles.profileWrapper}>
           <View style={styles.picWrapper}>
-            <Image source={assets.player1} style={styles.pic} />
+            <Image source={{ uri: profilePicture }} style={styles.pic} />
           </View>
         </View>
         <View style={styles.otherInfo}>
@@ -53,25 +63,22 @@ const Profile = () => {
             </View>
           </View>
           <View>
-            <PlayerInfo title={"Match Type"} value="50 Overs" />
-            <PlayerInfo
-              title={"Team Name"}
-              value="Kings Eleven Daska Kings Eleven Daska Kings Eleven Daska Kings Eleven Daska"
-            />
-            <PlayerInfo title={"Location"} value="Sialkot, Punjab" />
-            <PlayerInfo title={"Date"} value="22-08-2024" />
-            <PlayerInfo title={"Time"} value="08:00 am" />
+            <PlayerInfo title={"Match Type"} value={matchType} />
+            <PlayerInfo title={"Overs"} value={overs} />
+            <PlayerInfo title={"Team Name"} value={teamName} />
+            <PlayerInfo title={"Location"} value={location} />
+            <PlayerInfo title={"Date"} value={date} />
           </View>
         </View>
         <View style={[styles.otherInfo, { marginTop: 20 }]}>
-          <DiscussionWidget />
+          <DiscussionWidget inviteId={inviteId} />
         </View>
       </SafeAreaView>
     </ScrollView>
   );
 };
 
-export default Profile;
+export default MatchInviteDetail;
 
 const styles = StyleSheet.create({
   wrapper: {

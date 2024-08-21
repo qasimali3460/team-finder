@@ -49,21 +49,3 @@ export function getNearbyTeams(search, longitude, latitude) {
     params: { longitude, latitude, page: 1, limit: 100, search },
   });
 }
-
-export function sendMatchInvite(
-  toTeam,
-  matchDate,
-  matchType,
-  overs,
-  location,
-  message
-) {
-  return axios.post(`/match/invite`, {
-    toTeam,
-    matchDate,
-    matchType,
-    overs,
-    location,
-    message,
-  });
-}

@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,44 +12,60 @@ import {
 } from "react-native";
 import assets from "../../../assets/assets";
 import { RFValue } from "react-native-responsive-fontsize";
+import { getInviteMessages } from "../../../services/match.service";
+import { getSocket } from "../../../hooks/hooks";
 
-const DiscussionWidget = () => {
+const DiscussionWidget = ({ inviteId }) => {
+  const [socket] = getSocket();
+
   const [comments, setComments] = useState([
-    {
-      text: "Hello",
-      id: 1,
-      isMine: true,
-    },
-    {
-      text: "Hello",
-      id: 2,
-      isMine: false,
-    },
-    {
-      text: "Hello",
-      id: 3,
-      isMine: true,
-    },
-    {
-      text: "Yar agr ap log available ho iss date pr to a jana hm bi free ha iss din match khylny k liya",
-      id: 4,
-      isMine: true,
-    },
+    // {
+    //   text: "Hello",
+    //   id: 1,
+    //   isMine: true,
+    // },
+    // {
+    //   text: "Hello",
+    //   id: 2,
+    //   isMine: false,
+    // },
+    // {
+    //   text: "Hello",
+    //   id: 3,
+    //   isMine: true,
+    // },
+    // {
+    //   text: "Yar agr ap log available ho iss date pr to a jana hm bi free ha iss din match khylny k liya",
+    //   id: 4,
+    //   isMine: true,
+    // },
   ]);
+
   const [newComment, setNewComment] = useState("");
+
+  useEffect(() => {
+    getInviteMessages(inviteId).then((response) => {
+      setComments(response?.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit("joinRoom", { matchInvitationId: inviteId });
+    }
+  }, [socket]);
 
   const handleAddComment = () => {
     if (newComment.trim() !== "") {
-      setComments([
-        ...comments,
-        { id: Date.now(), text: newComment, isMine: true },
-      ]);
-      setNewComment("");
+      socket.emit("chatMessage", {
+        message: newComment,
+        matchInvitationId: inviteId,
+      });
     }
   };
 
   const renderComment = ({ item }) => {
-    const isMine = item.isMine; // Assuming there's a flag to identify if the comment is mine
+    const isMine = item.myMessage ?? false; // Assuming there's a flag to identify if the comment is mine
     return (
       <View
         style={[
@@ -59,7 +75,7 @@ const DiscussionWidget = () => {
       >
         {!isMine && <Image source={assets.illustr1} style={styles.avatar} />}
         <View style={styles.commentTextWrapper}>
-          <Text style={styles.commentText}>{item.text}</Text>
+          <Text style={styles.commentText}>{item.message}</Text>
         </View>
         {isMine && <Image source={assets.background1} style={styles.avatar} />}
       </View>
@@ -75,7 +91,7 @@ const DiscussionWidget = () => {
         <FlatList
           data={comments}
           renderItem={renderComment}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id.toString()}
           contentContainerStyle={styles.commentList}
         />
       </View>

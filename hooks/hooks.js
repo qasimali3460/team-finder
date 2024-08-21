@@ -1,6 +1,8 @@
 import { getItem, getItemAsync } from "expo-secure-store";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import { SERVER_URL } from "../services";
 
 export function getAuth() {
   const [token, setToken] = useState(null);
@@ -31,4 +33,23 @@ export function currentSession() {
   }, []);
 
   return [userId];
+}
+
+export function getSocket() {
+  let [socket, setSocket] = useState(null);
+  useEffect(() => {
+    const token = getItem("token");
+    if (token) {
+      const mySocket = io(SERVER_URL, {
+        auth: {
+          token,
+        },
+      });
+      setSocket(mySocket);
+      return () => {
+        mySocket.disconnect();
+      };
+    }
+  }, []);
+  return [socket];
 }

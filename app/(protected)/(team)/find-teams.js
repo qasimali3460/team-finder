@@ -1,31 +1,15 @@
-import {
-  Alert,
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  acceptInvite,
-  cancelInvite,
-  getMyInvites,
-  getNearbyTeams,
-  sendMatchInvite,
-} from "../../../services/team.service";
+import { getNearbyTeams } from "../../../services/team.service";
 import Toast from "react-native-toast-message";
-import { Button, Icon, Input, Modal, StatusBar } from "native-base";
+import { Icon, Input, Modal, StatusBar } from "native-base";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { RFValue } from "react-native-responsive-fontsize";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import TeamCard from "../../../components/cards/TeamCard";
 import * as Location from "expo-location";
-import RBSheet from "react-native-raw-bottom-sheet";
-import QuickTeamDetail from "./SendInvite";
 import Sendinvite from "./SendInvite";
+import { sendMatchInvite } from "../../../services/match.service";
 
 const Players = () => {
   const [teams, setTeams] = useState([]);

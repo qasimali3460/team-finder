@@ -1,15 +1,39 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useMemo } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
+import moment from "moment";
 
-const MatchInviteCard = ({ teamName, location, date, image, id }) => {
+const MatchInviteCard = ({
+  teamName,
+  location,
+  matchDate,
+  profilePicture,
+  _id,
+  matchType,
+  overs,
+}) => {
+  const date = useMemo(() => {
+    return moment(matchDate ?? new Date()).format("MMMM Do YYYY");
+  }, [matchDate]);
+
   const goToProfile = () => {
     router.navigate("team");
   };
 
   const goToInvite = () => {
-    router.navigate("match-invite-detail");
+    router.navigate({
+      pathname: "match-invite-detail",
+      params: {
+        inviteId: _id,
+        teamName,
+        location,
+        date,
+        profilePicture,
+        matchType,
+        overs,
+      },
+    });
   };
 
   const cancelInvite = () => {};
@@ -18,7 +42,7 @@ const MatchInviteCard = ({ teamName, location, date, image, id }) => {
     <View onPress={goToProfile} style={styles.card}>
       <View style={styles.imgWrapper}>
         <TouchableOpacity onPress={goToProfile}>
-          <Image source={image} style={styles.img} />
+          <Image source={{ uri: profilePicture }} style={styles.img} />
         </TouchableOpacity>
       </View>
       <View style={styles.detail}>
