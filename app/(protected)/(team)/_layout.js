@@ -56,6 +56,12 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="invite-discussion"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

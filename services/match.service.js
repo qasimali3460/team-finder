@@ -22,6 +22,26 @@ export function getReceivedMatchInvites() {
   return axios.get(`/match/received`);
 }
 
+export function getSentMatchInvites() {
+  return axios.get(`/match/sent`);
+}
+
 export function getInviteMessages(matchInvitation) {
   return axios.get(`/match/messages`, { params: { matchInvitation } });
+}
+
+export function getMessagesCount(matchInvitation) {
+  return axios.get(`/match/messages/count`, { params: { matchInvitation } });
+}
+
+export function acceptMatchInvite(matchInvitation) {
+  return axios.post(`/match/accept/${matchInvitation}`);
+}
+
+export function declineMatchInvite(matchInvitation) {
+  return axios.post(`/match/decline/${matchInvitation}`);
+}
+
+export function cancelMatchInvite(matchInvitation) {
+  return axios.post(`/match/cancel/${matchInvitation}`);
 }
