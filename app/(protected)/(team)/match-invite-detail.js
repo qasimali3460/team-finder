@@ -245,10 +245,10 @@ const MatchInviteDetail = () => {
               </View>
             </View>
             <View>
-              <PlayerInfo title={"Match Type"} value={matchType} />
-              <PlayerInfo title={"Overs"} value={overs} />
               <PlayerInfo title={"Team Name"} value={teamName} />
               <PlayerInfo title={"Location"} value={location} />
+              <PlayerInfo title={"Match Type"} value={matchType} />
+              <PlayerInfo title={"Overs"} value={overs} />
               <PlayerInfo title={"Date"} value={date} />
             </View>
           </View>

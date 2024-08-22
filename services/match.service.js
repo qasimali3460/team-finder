@@ -45,3 +45,7 @@ export function declineMatchInvite(matchInvitation) {
 export function cancelMatchInvite(matchInvitation) {
   return axios.post(`/match/cancel/${matchInvitation}`);
 }
+
+export function getUpcomingMatches() {
+  return axios.get(`/match/upcoming`);
+}
