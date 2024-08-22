@@ -49,3 +49,7 @@ export function cancelMatchInvite(matchInvitation) {
 export function getUpcomingMatches() {
   return axios.get(`/match/upcoming`);
 }
+
+export function getHistoryMatches() {
+  return axios.get(`/match/history`);
+}

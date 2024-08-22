@@ -102,37 +102,24 @@ function Tabs() {
 
 export default () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <StatusBar barStyle={"dark-content"} />
-        <ScreenHeader title="Matches" />
+    <View style={styles.wrapper}>
+      <StatusBar barStyle={"dark-content"} />
+      <ScreenHeader title="Matches" />
+      <SafeAreaView style={styles.container}>
+        {/* <View style={styles.container}> */}
         <Tabs />
-      </View>
-    </SafeAreaView>
+        {/* </View> */}
+      </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   container: {
     flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  list: {
-    paddingBottom: 16,
-  },
-  itemContainer: {
-    backgroundColor: "#ffffff",
-    padding: 16,
-    marginBottom: 8,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
   },
 });

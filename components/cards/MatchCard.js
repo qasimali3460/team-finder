@@ -17,6 +17,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import moment from "moment/moment";
 
 const MatchCard = ({
   _id,
@@ -45,7 +46,9 @@ const MatchCard = ({
           end={{ x: 1, y: 0 }}
           style={styles.dateInnerWrapper}
         >
-          <Text style={styles.date}>{"August 20, 2024"}</Text>
+          <Text style={styles.date}>
+            {moment(matchDate).format("MMM DD, YY")}
+          </Text>
         </LinearGradient>
       </View>
       <View style={styles.teamsWrapper}>

@@ -1,7 +1,5 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { teamMembers } from "../../../constants/players.constant";
-import PendingPlayer from "../../../components/cards/PendingPlayer";
 import { getUpcomingMatches } from "../../../services/match.service";
 import MatchCard from "../../../components/cards/MatchCard";
 
@@ -10,6 +8,10 @@ const UpcomingMatches = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    getMatches();
+  }, []);
+
+  const getMatches = () => {
     setLoading(true);
     getUpcomingMatches()
       .then((response) => {
@@ -18,7 +20,7 @@ const UpcomingMatches = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  };
 
   return (
     <View style={styles.container}>
@@ -28,6 +30,8 @@ const UpcomingMatches = () => {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
         numColumns={1}
+        onRefresh={() => getMatches()}
+        refreshing={loading}
       />
     </View>
   );
