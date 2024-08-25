@@ -49,32 +49,30 @@ const InviteUser = ({ closeDialog, refreshInvites }) => {
       <View style={styles.titleWrapper}>
         <Text style={styles.title}>Invite User</Text>
       </View>
-      <KeyboardAvoidingView>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter phone"
-          keyboardType="number-pad"
-          autoCapitalize="none"
-          value={phone}
-          onChangeText={setPhone}
-        />
-        <TextArea
-          h={20}
-          placeholder="Say something "
-          value={message}
-          onChangeText={setMessage}
-        />
-        <Button
-          title="Send Invite"
-          onPress={handleSendInvite}
-          style={styles.inviteBtn}
-          isLoading={loading}
-          isLoadingText="Please wait"
-          disabled={!phone || !message || loading}
-        >
-          Send Invites
-        </Button>
-      </KeyboardAvoidingView>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter phone"
+        keyboardType="number-pad"
+        autoCapitalize="none"
+        value={phone}
+        onChangeText={setPhone}
+      />
+      <TextArea
+        h={20}
+        placeholder="Say something "
+        value={message}
+        onChangeText={setMessage}
+      />
+      <Button
+        title="Send Invite"
+        onPress={handleSendInvite}
+        style={styles.inviteBtn}
+        isLoading={loading}
+        isLoadingText="Please wait"
+        disabled={!phone || !message || loading}
+      >
+        Send Invites
+      </Button>
     </View>
   );
 };

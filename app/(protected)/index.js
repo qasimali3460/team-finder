@@ -1,9 +1,10 @@
 import React from "react";
 import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
-import assets from "../../../assets/assets";
+import assets from "../../assets/assets";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { RFValue } from "react-native-responsive-fontsize";
+import HomeProfile from "../../components/profile/homeProfile";
 
 const tiles = [
   {
@@ -18,12 +19,12 @@ const tiles = [
     path: "matches",
     colors: ["hsla(318, 44%, 51%, 1)", "hsla(347, 94%, 48%, 1)"],
   },
-  {
-    name: "My Profile",
-    icon: assets.profile,
-    path: "profile",
-    colors: ["hsla(234, 100%, 83%, 1)", "hsla(288, 100%, 81%, 1)"],
-  },
+  // {
+  //   name: "My Profile",
+  //   icon: assets.profile,
+  //   path: "profile",
+  //   colors: ["hsla(234, 100%, 83%, 1)", "hsla(288, 100%, 81%, 1)"],
+  // },
   {
     name: "My Team",
     icon: assets.cricket,
@@ -58,12 +59,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Image source={assets.home} style={styles.backgroundImage} />
-
-      <View style={styles.header}>
-        <Text style={styles.username}>Ryan shadow</Text>
-        <Text style={styles.email}>ryanshadow@example.com</Text>
-      </View>
-
+      <HomeProfile />
       <View style={styles.logoContainer}>
         <Image source={assets.logo1} style={styles.logo} />
       </View>
@@ -104,20 +100,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     height: "100%",
-  },
-  header: {
-    position: "absolute",
-    top: 40,
-    left: 20,
-  },
-  username: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-  email: {
-    fontSize: 14,
-    color: "#fff",
   },
   logoContainer: {
     position: "absolute",

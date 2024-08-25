@@ -1,15 +1,14 @@
 import {
   Alert,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
-import { router, useNavigation } from "expo-router";
+import { router, useFocusEffect, useNavigation } from "expo-router";
 import PlayerInfo from "@/components/tiles/profile/Info";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
 import {
@@ -23,6 +22,8 @@ import ProfileImage from "../../../components/input/profile-image";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { Button } from "native-base";
 import { useRoute } from "@react-navigation/native";
+import moment from "moment";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const teams = [
   {
@@ -51,13 +52,35 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [overlay, setOverlay] = useState(false);
   const [currentUserId] = currentSession();
+  const [otherUserId, setOtherUserId] = useState(null);
   const myRoute = useRoute();
 
   const editProfile = () => {
     router.navigate("edit-profile");
   };
 
+  const totalAge = useMemo(() => {
+    let age = "";
+    if (profile?.dob && moment(new Date(profile?.dob)).isValid()) {
+      age = moment().diff(moment(new Date(profile?.dob)), "year");
+    }
+    return age;
+  }, [profile]);
+
+  const navigation = useNavigation();
+
   useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      handleProfile();
+    });
+    handleProfile();
+
+    return () => {
+      unsubscribe();
+    };
+  }, [currentUserId]);
+
+  const handleProfile = () => {
     if (currentUserId) {
       let userId = null;
       let isMine = true;
@@ -69,14 +92,13 @@ const Profile = () => {
       } else {
         userId = currentUserId;
       }
-      console.log(userId, isMine, currentUserId);
       setOverlay(true);
       if (isMine) {
         getMyProfile()
           .then((response) => {
             const profile = response?.data?.data;
-            console.log("profile: ", profile);
             setProfile(profile);
+            setOtherUserId(profile?.user?._id);
           })
           .catch((e) => {
             console.log("e: ", e);
@@ -89,9 +111,9 @@ const Profile = () => {
           })
           .finally(() => setOverlay(false));
       } else {
+        setOtherUserId(userId);
         getOtherUserProfile(userId)
           .then((response) => {
-            console.log("response: ", response);
             const profile = response?.data?.data;
             setProfile(profile);
           })
@@ -107,11 +129,11 @@ const Profile = () => {
           .finally(() => setOverlay(false));
       }
     }
-  }, [currentUserId]);
+  };
 
   return (
-    <ScrollView>
-      <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView>
         <StatusBar barStyle={"dark-content"} />
         <ScreenHeader title={"User Profile"} />
         <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
@@ -121,16 +143,19 @@ const Profile = () => {
           readOnly={true}
         />
         <View style={styles.editWrapper}>
-          <Button style={styles.editBtn} onPress={editProfile}>
-            Edit Profile
-          </Button>
+          {currentUserId && otherUserId && otherUserId === currentUserId && (
+            <Button style={styles.editBtn} onPress={editProfile}>
+              Edit Profile
+            </Button>
+          )}
         </View>
         <View style={styles.otherInfo}>
           <Text style={styles.detailTitle}>Player Detail</Text>
           <View>
+            <PlayerInfo title={"Name"} value={profile?.user?.name ?? ""} />
             <PlayerInfo
               title={"Age"}
-              value={new Date(profile?.dob).toLocaleDateString()}
+              value={totalAge ? `${totalAge} Years` : ""}
             />
             <PlayerInfo title={"Location"} value={profile?.location} />
             <PlayerInfo
@@ -153,8 +178,8 @@ const Profile = () => {
             })}
           </View>
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

@@ -3,7 +3,11 @@ import React from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
 
-const PlayerCard = ({ isLast, name, battingStyle, profilePicture, _id }) => {
+const PlayerCard = ({
+  user: { name },
+  userDetails: { profilePicture, prefferedRole },
+  isLast,
+}) => {
   const goToProfile = () => {
     router.navigate({ pathname: "profile", params: { userId: _id } });
   };
@@ -17,7 +21,7 @@ const PlayerCard = ({ isLast, name, battingStyle, profilePicture, _id }) => {
       </View>
       <View style={styles.detail}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.role}>{battingStyle}</Text>
+        <Text style={styles.role}>{prefferedRole}</Text>
       </View>
     </TouchableOpacity>
   );

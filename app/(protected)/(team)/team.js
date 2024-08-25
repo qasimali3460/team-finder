@@ -1,6 +1,5 @@
 import {
   Alert,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -9,7 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import PlayerInfo from "@/components/tiles/profile/Info";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
 import { getMyProfile } from "../../../services/user.service";
@@ -21,42 +20,21 @@ import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { Button } from "native-base";
 import { getMyTeam, getOtherTeamDetail } from "../../../services/team.service";
 import { useRoute } from "@react-navigation/native";
-
-const teams = [
-  {
-    title: "Multan Sultan",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMSYerJFUDA_P0_YKm0tizI0kogAj6wXxzWQ&s",
-  },
-  {
-    title: "Lahore Qalanders",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtlgBlQvIzJZ4u8R8lcGNlD0pyG5lUPiH9rA&s",
-  },
-  {
-    title: "Quetta gladiators",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJdpDj05rp-pyZD2HtRgiejPk1fJ_XOqnZrQ&s",
-  },
-  {
-    title: "Chennai super king",
-    logo: "https://static.toiimg.com/thumb/msid-85232066,width-400,resizemode-4/85232066.jpg",
-  },
-  {
-    title: "Sydney Thuders",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq84POhpj9qBmh1hsc-VzMpD-N0NZEpJKjLQ&s",
-  },
-];
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   console.log("profile: ", profile);
   const [overlay, setOverlay] = useState(false);
-  const [userId] = currentSession();
+  const [currentUserId] = currentSession();
   const myRoute = useRoute();
+  const navigation = useNavigation();
 
   const editTeam = () => {
     router.navigate("edit-team");
   };
 
-  useEffect(() => {
+  const fetchTeam = () => {
     let teamId = null;
     if (myRoute.params.teamId) {
       teamId = myRoute.params.teamId;
@@ -95,11 +73,22 @@ const Profile = () => {
         })
         .finally(() => setOverlay(false));
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      fetchTeam();
+    });
+    fetchTeam();
+
+    return () => {
+      unsubscribe();
+    };
+  }, [currentUserId]);
 
   return (
-    <ScrollView>
-      <SafeAreaView>
+    <SafeAreaView>
+      <ScrollView>
         <StatusBar barStyle={"dark-content"} />
         <ScreenHeader title={"Team Detail"} />
         <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
@@ -109,7 +98,7 @@ const Profile = () => {
           readOnly={true}
         />
         <View style={styles.editWrapper}>
-          {profile?.user?._id && (
+          {profile?.user?._id === currentUserId && (
             <Button style={styles.editBtn} onPress={editTeam}>
               Edit Team
             </Button>
@@ -136,8 +125,8 @@ const Profile = () => {
             })} */}
           </View>
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

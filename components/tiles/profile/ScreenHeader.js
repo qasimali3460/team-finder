@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignItems: "center",
-    marginTop: StatusBar.currentHeight,
   },
   title: {
     fontSize: RFValue(20),

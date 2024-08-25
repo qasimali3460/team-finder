@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { Button, ScrollView, StatusBar, TextField } from "native-base";
@@ -14,6 +14,8 @@ import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { getMyProfile, updateMyProfile } from "../../../services/user.service";
 import Toast from "react-native-toast-message";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useNavigation } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const EditProfile = () => {
   const [img, setImg] = useState("");
@@ -36,7 +38,8 @@ const EditProfile = () => {
     formData.append("prefferedRole", role);
     formData.append("battingStyle", battingStyle);
     formData.append("bowlingStyle", bowlingStyle);
-    formData.append("dob", new Date(dateOfBirth).toLocaleString());
+    formData.append("dob", String(dateOfBirth));
+
     if (imgFile) {
       formData.append("profilePicture", imgFile);
     }
@@ -70,7 +73,7 @@ const EditProfile = () => {
       })
       .finally(() => setLoading(false));
   };
-
+  const navigation = useNavigation();
   useEffect(() => {
     setOverlay(true);
     getMyProfile()
@@ -82,16 +85,16 @@ const EditProfile = () => {
         setBowlingStyle(profile?.bowlingStyle);
         setBattingStyle(profile?.battingStyle);
         setImg(profile?.profilePicture);
-        setDateOfBirth(new Date(profile?.dob));
+        setDateOfBirth(profile?.dob ? new Date(profile?.dob) : new Date());
         setCover(profile?.coverPhoto);
       })
       .finally(() => setOverlay(false));
   }, []);
 
   return (
-    <ScrollView style={styles.wrapper}>
-      <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
-      <SafeAreaView style={{ backgroundColor: "white" }}>
+    <SafeAreaView style={styles.wrapper}>
+      <ScrollView style={styles.wrapper}>
+        <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
         <StatusBar barStyle={"dark-content"} />
         <ScreenHeader title={"Edit Profile"} />
         <ProfileImage
@@ -177,8 +180,8 @@ const EditProfile = () => {
             </Button>
           </View>
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

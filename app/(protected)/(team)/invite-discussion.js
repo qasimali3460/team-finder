@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  SafeAreaView,
 } from "react-native";
 import assets from "../../../assets/assets";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -20,6 +19,7 @@ import { Icon, Input, StatusBar, TextField } from "native-base";
 import EmojiPicker from "rn-emoji-keyboard";
 import { useRoute } from "@react-navigation/native";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const DiscussionWidget = () => {
   const [socket] = getSocket();

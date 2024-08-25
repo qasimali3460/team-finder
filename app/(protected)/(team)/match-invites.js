@@ -7,7 +7,6 @@ import {
   StatusBar,
   Animated,
   Pressable,
-  SafeAreaView,
 } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { Box, useColorModeValue } from "native-base";
@@ -21,6 +20,7 @@ import TeamMembersContext from "../../../hooks/teamMembers";
 import { getSentInvites } from "../../../services/team.service";
 import ReceivedMatchInvites from "./received-match-invites";
 import SentMatchInvites from "./sent-match-invites";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const initialLayout = {
   width: Dimensions.get("window").width,
@@ -111,13 +111,11 @@ function Tabs() {
 
 export default () => {
   return (
-    <View style={[styles.container, { backgroundColor: "white" }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: "white" }]}>
       <StatusBar barStyle={"dark-content"} />
-      <SafeAreaView style={styles.container}>
-        <ScreenHeader title="Match Invites" />
-        <Tabs />
-      </SafeAreaView>
-    </View>
+      <ScreenHeader title="Match Invites" />
+      <Tabs />
+    </SafeAreaView>
   );
 };
 

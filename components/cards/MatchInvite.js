@@ -13,6 +13,7 @@ const MatchInviteCard = ({
   matchType,
   overs,
   sentByMe = false,
+  coverPhoto,
 }) => {
   const date = useMemo(() => {
     return moment(matchDate ?? new Date()).format("MMMM Do YYYY");
@@ -33,6 +34,7 @@ const MatchInviteCard = ({
         profilePicture,
         matchType,
         overs,
+        coverPhoto,
         sentByMe,
       },
     });

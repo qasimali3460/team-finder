@@ -9,13 +9,7 @@ export default function TabLayout() {
       }}
     >
       <Stack.Screen
-        name="login"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="register"
+        name="index"
         options={{
           headerShown: false,
         }}

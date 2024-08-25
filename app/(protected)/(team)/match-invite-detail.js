@@ -12,7 +12,6 @@ import {
   View,
   FlatList,
   Alert,
-  SafeAreaView,
 } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
@@ -31,6 +30,7 @@ import {
   getMessagesCount,
 } from "../../../services/match.service";
 import Toast from "react-native-toast-message";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const MatchInviteDetail = () => {
   const myRoute = useRoute();

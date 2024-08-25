@@ -24,23 +24,49 @@ const Players = () => {
         getInvites();
       });
   };
-
   return (
     <View style={styles.container}>
-      <FlatList
-        data={invites}
-        renderItem={({ item }) => (
-          <PendingPlayer onCancel={handleCancelInvite} {...item} />
-        )}
-        keyExtractor={(item) => item.inviteId}
-        contentContainerStyle={styles.list}
-        numColumns={1}
-        onRefresh={getInvites}
-        refreshing={loading}
-      />
+      {invites.length > 0 && (
+        <FlatList
+          data={invites}
+          renderItem={({ item }) => (
+            <PendingPlayer onCancel={handleCancelInvite} {...item} />
+          )}
+          keyExtractor={(item) => item.inviteId}
+          contentContainerStyle={styles.list}
+          numColumns={1}
+          onRefresh={getInvites}
+          refreshing={loading}
+        />
+      )}
+
+      {loading && invites?.length === 0 && (
+        <View style={styles.emptyWrapper}>
+          <Text style={styles.loadingMsg}>Loading please wait</Text>
+        </View>
+      )}
+      {!loading && invites?.length === 0 && (
+        <View style={styles.emptyWrapper}>
+          <Text style={styles.loadingMsg}>
+            No pending invites for your team
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
 export default Players;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  emptyWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingMsg: {
+    color: "grey",
+  },
+});

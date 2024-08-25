@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Alert } from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import {
@@ -16,6 +16,7 @@ import Toast from "react-native-toast-message";
 import Spinner from "react-native-loading-spinner-overlay";
 import { getMyTeam, updateMyTeam } from "../../../services/team.service";
 import * as Location from "expo-location";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const EditTeam = () => {
   const [img, setImg] = useState("");
@@ -25,7 +26,7 @@ const EditTeam = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
-  const [teamType, setTeamType] = useState("");
+  const [teamType, setTeamType] = useState("Tape ball");
   const [loading, setLoading] = useState(false);
   const [overlay, setOverlay] = useState(false);
   const [location, setLocation] = useState(null);
@@ -106,9 +107,9 @@ const EditTeam = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.wrapper}>
-      <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
-      <SafeAreaView style={{ backgroundColor: "white" }}>
+    <SafeAreaView style={styles.wrapper}>
+      <ScrollView style={styles.wrapper}>
+        <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
         <StatusBar barStyle={"dark-content"} />
         <ScreenHeader title={"Edit Profile"} />
         <ProfileImage
@@ -152,7 +153,7 @@ const EditTeam = () => {
           </View>
 
           <View style={[styles.fieldWrapper, { paddingTop: 10 }]}>
-            <Text style={styles.fieldTitle}>Prefferred Role</Text>
+            <Text style={styles.fieldTitle}>Team Type</Text>
             <Picker
               selectedValue={teamType}
               onValueChange={(itemValue) => setTeamType(itemValue)}
@@ -174,8 +175,8 @@ const EditTeam = () => {
             </Button>
           </View>
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

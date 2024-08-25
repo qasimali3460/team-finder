@@ -37,7 +37,7 @@ const LoginScreen = () => {
         });
         setPhone("");
         setPassword("");
-        router.replace("home");
+        router.replace("(protected)");
       })
       .catch((e) => {
         const errorMessage = e?.response?.data?.message ?? "Failed to login";
@@ -69,7 +69,7 @@ const LoginScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter your phone number"
-              keyboardType="default"
+              keyboardType="number-pad"
               autoCapitalize="none"
               value={phone}
               onChangeText={setPhone}

@@ -10,6 +10,7 @@ import TeamCard from "../../../components/cards/TeamCard";
 import * as Location from "expo-location";
 import Sendinvite from "./SendInvite";
 import { sendMatchInvite } from "../../../services/match.service";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Players = () => {
   const [teams, setTeams] = useState([]);
@@ -94,7 +95,7 @@ const Players = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar barStyle={"dark-content"} />
       <ScreenHeader title="Find teams" />
       <View style={styles.searchWrapper}>
@@ -122,11 +123,13 @@ const Players = () => {
       <FlatList
         data={teams}
         renderItem={({ item }) => (
-          <TeamCard
-            sendInvite={() => viewInvite(item)}
-            viewTeam={() => viewTeam(item)}
-            {...item}
-          />
+          <>
+            <TeamCard
+              sendInvite={() => viewInvite(item)}
+              viewTeam={() => viewTeam(item)}
+              {...item}
+            />
+          </>
         )}
         keyExtractor={(item) => item.inviteId}
         contentContainerStyle={styles.list}
@@ -143,7 +146,7 @@ const Players = () => {
           />
         </Modal.Content>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 export default Players;
@@ -156,6 +159,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 8,
+    flex: 1,
   },
   closeWrapper: {
     alignItems: "center",

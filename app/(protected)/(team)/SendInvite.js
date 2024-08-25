@@ -47,7 +47,7 @@ const Sendinvite = ({ loading, onSubmit, onClose }) => {
               onChangeText={(value) => setLocation(value)}
               placeholder="Enter ground location"
               name="overs"
-              keyboardType="numeric"
+              keyboardType="default"
             />
           </View>
 

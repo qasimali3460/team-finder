@@ -1,7 +1,10 @@
 import axios from "axios";
-import { getItem } from "expo-secure-store";
+import { router } from "expo-router";
+import { deleteItemAsync, getItem } from "expo-secure-store";
+import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
 
-export const SERVER_URL = "http://192.168.104.159:5000";
+export const SERVER_URL = "http://192.168.10.5:5000";
 export const BASE_URL = `${SERVER_URL}/api/v1`;
 
 const instance = axios.create({
@@ -15,5 +18,17 @@ instance.interceptors.request.use(async (config) => {
   }
   return config;
 });
+
+instance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response && error.response.status === 401) {
+      deleteItemAsync("token");
+      router.replace("(auth)/login");
+    }
+
+    return Promise.reject(error); // Reject the error to handle it in the catch block
+  }
+);
 
 export default instance;

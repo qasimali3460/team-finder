@@ -102,15 +102,13 @@ function Tabs() {
 
 export default () => {
   return (
-    <View style={styles.wrapper}>
+    <SafeAreaView style={styles.wrapper}>
       <StatusBar barStyle={"dark-content"} />
       <ScreenHeader title="Matches" />
-      <SafeAreaView style={styles.container}>
-        {/* <View style={styles.container}> */}
-        <Tabs />
-        {/* </View> */}
-      </SafeAreaView>
-    </View>
+      {/* <View style={styles.container}> */}
+      <Tabs />
+      {/* </View> */}
+    </SafeAreaView>
   );
 };
 

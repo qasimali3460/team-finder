@@ -28,7 +28,7 @@ const HistoryMatches = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={[...matches, ...matches, ...matches, ...matches]}
+        data={matches}
         renderItem={({ item }) => <MatchCard {...item} />}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
@@ -41,4 +41,8 @@ const HistoryMatches = () => {
 };
 export default HistoryMatches;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

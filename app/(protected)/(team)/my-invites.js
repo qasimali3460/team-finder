@@ -21,6 +21,7 @@ import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import PendingInviteCard from "../../../components/cards/PendingInvite";
 import { RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Players = () => {
   const [invites, setInvites] = useState([]);
@@ -79,7 +80,7 @@ const Players = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar barStyle={"dark-content"} />
       <ScreenHeader title="My Invites" />
       <FlatList
@@ -138,12 +139,15 @@ const Players = () => {
           </View>
         </Modal.Content>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 export default Players;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   detailWrapper: {
     flex: 1,
     paddingHorizontal: 20,

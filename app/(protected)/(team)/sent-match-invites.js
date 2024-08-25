@@ -2,13 +2,22 @@ import { FlatList, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import MatchInviteCard from "../../../components/cards/MatchInvite";
 import { getSentMatchInvites } from "../../../services/match.service";
+import { useNavigation } from "expo-router";
 
 const SentMatchInvites = () => {
   const [invites, setInvites] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getInvites();
+    });
     getInvites();
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const getInvites = () => {
