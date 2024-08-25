@@ -24,8 +24,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const DiscussionWidget = () => {
   const [socket] = getSocket();
   const [comments, setComments] = useState([]);
+  console.log("comments: ", comments);
   const [newComment, setNewComment] = useState("");
   const [open, setOpen] = useState(false);
+  const [done, setDone] = useState(false);
   const [inviteId, setInviteId] = useState(null);
   const flatListRef = useRef();
   const myRouter = useRoute();
@@ -41,10 +43,19 @@ const DiscussionWidget = () => {
   }, []);
 
   useEffect(() => {
-    if (socket && inviteId) {
+    if (socket && inviteId && !done) {
+      setDone(true);
       socket.emit("joinRoom", { matchInvitationId: inviteId });
+
+      socket.on("chatMessage", (response) => {
+        console.log("new chat message ", response.message.myMessage);
+        if (response?.message) {
+          console.log("previous", comments, response?.message);
+          setComments((prevValue) => [...prevValue, response?.message]);
+        }
+      });
     }
-  }, [socket, inviteId]);
+  }, [socket, inviteId, comments, done]);
 
   const handleAddComment = () => {
     if (newComment.trim() !== "") {
@@ -56,6 +67,7 @@ const DiscussionWidget = () => {
           matchInvitationId: inviteId,
         },
         (response) => {
+          console.log("response: ", response);
           if (response?.message) {
             setComments([...comments, response?.message]);
           }
@@ -70,6 +82,7 @@ const DiscussionWidget = () => {
 
   const renderComment = ({ item }) => {
     const isMine = item.myMessage ?? false;
+    console.log("isMine: ", isMine);
     return (
       <View
         style={[
@@ -77,11 +90,21 @@ const DiscussionWidget = () => {
           isMine ? styles.myComment : styles.otherComment,
         ]}
       >
-        {!isMine && <Image source={assets.illustr1} style={styles.avatar} />}
+        {!isMine && (
+          <Image
+            source={{ uri: item.fromTeamProfilePicture }}
+            style={styles.avatar}
+          />
+        )}
         <View style={styles.commentTextWrapper}>
           <Text style={styles.commentText}>{item.message}</Text>
         </View>
-        {isMine && <Image source={assets.background1} style={styles.avatar} />}
+        {isMine && (
+          <Image
+            source={{ uri: item.fromTeamProfilePicture }}
+            style={styles.avatar}
+          />
+        )}
       </View>
     );
   };
