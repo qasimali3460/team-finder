@@ -82,7 +82,6 @@ const DiscussionWidget = () => {
 
   const renderComment = ({ item }) => {
     const isMine = item.myMessage ?? false;
-    console.log("isMine: ", isMine);
     return (
       <View
         style={[

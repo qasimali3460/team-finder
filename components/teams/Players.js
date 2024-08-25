@@ -1,8 +1,8 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
-import { teamMembers } from "../../../constants/players.constant";
-import PlayerCard from "../../../components/cards/PlayerCard";
-import { getMyTeamMembers } from "../../../services/team.service";
+import { teamMembers } from "../../constants/players.constant";
+import PlayerCard from "../cards/PlayerCard";
+import { getMyTeamMembers } from "../../services/team.service";
 import { useState } from "react";
 
 const Players = () => {

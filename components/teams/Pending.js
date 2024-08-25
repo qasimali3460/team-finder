@@ -1,13 +1,11 @@
-import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { teamMembers } from "../../../constants/players.constant";
-import PendingPlayer from "../../../components/cards/PendingPlayer";
-import { cancelInvite, getSentInvites } from "../../../services/team.service";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import React, { useContext } from "react";
+import PendingPlayer from "../cards/PendingPlayer";
 import Toast from "react-native-toast-message";
-import TeamMembersContext from "../../../hooks/teamMembers";
-import { theme } from "native-base";
+import TeamMembersContext from "../../hooks/teamMembers";
+import { cancelInvite } from "../../services/team.service";
 
-const Players = () => {
+const Pending = () => {
   const { invites, getInvites, loading } = useContext(TeamMembersContext);
 
   const handleCancelInvite = (inviteId) => {
@@ -55,7 +53,7 @@ const Players = () => {
     </View>
   );
 };
-export default Players;
+export default Pending;
 
 const styles = StyleSheet.create({
   container: {

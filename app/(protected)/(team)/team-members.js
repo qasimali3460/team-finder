@@ -12,13 +12,13 @@ import { TabView, SceneMap } from "react-native-tab-view";
 import { Box, useColorModeValue } from "native-base";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Pending from "./Pending";
-import Players from "./Players";
+import Players from "../../../components/teams/Players";
 import { FontAwesome } from "@expo/vector-icons";
 import InviteUser from "./invite-user";
 import RBSheet from "react-native-raw-bottom-sheet";
 import TeamMembersContext from "../../../hooks/teamMembers";
 import { getSentInvites } from "../../../services/team.service";
+import Pending from "../../../components/teams/Pending";
 
 const initialLayout = {
   width: Dimensions.get("window").width,

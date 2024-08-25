@@ -8,9 +8,9 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { MaterialIcons } from "@expo/vector-icons";
 import TeamCard from "../../../components/cards/TeamCard";
 import * as Location from "expo-location";
-import Sendinvite from "./SendInvite";
 import { sendMatchInvite } from "../../../services/match.service";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SendInvite from "../../../components/teams/SendInvite";
 
 const Players = () => {
   const [teams, setTeams] = useState([]);
@@ -139,7 +139,7 @@ const Players = () => {
       />
       <Modal isOpen={open} onClose={() => setOpen(false)}>
         <Modal.Content maxWidth={"95%"} height={1000} maxHeight={"80%"}>
-          <Sendinvite
+          <SendInvite
             loading={inviteLoading}
             onClose={() => setOpen(false)}
             onSubmit={handleSubmit}

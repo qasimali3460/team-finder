@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Picker } from "@react-native-picker/picker";
 import { Button, TextArea, TextField } from "native-base";
-import DatePicker from "../../../components/input/datepicker";
+import DatePicker from "../input/datepicker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-const Sendinvite = ({ loading, onSubmit, onClose }) => {
+const SendInvite = ({ loading, onSubmit, onClose }) => {
   const [type, setType] = useState("Tape ball");
   const [overs, setOvers] = useState(20);
   const [location, setLocation] = useState("");
@@ -98,7 +98,7 @@ const Sendinvite = ({ loading, onSubmit, onClose }) => {
   );
 };
 
-export default Sendinvite;
+export default SendInvite;
 
 const styles = StyleSheet.create({
   wrapper: {

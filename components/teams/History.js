@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getHistoryMatches } from "../../../services/match.service";
-import MatchCard from "../../../components/cards/MatchCard";
+import { getHistoryMatches } from "../../services/match.service";
+import MatchCard from "../cards/MatchCard";
 
 const HistoryMatches = () => {
   const [matches, setMatches] = useState([]);

@@ -12,7 +12,7 @@ import { Box, useColorModeValue } from "native-base";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Upcoming from "./Upcoming";
-import History from "./History";
+import History from "../../../components/teams/History";
 
 const initialLayout = {
   width: Dimensions.get("window").width,
