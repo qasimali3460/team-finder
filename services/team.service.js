@@ -4,6 +4,10 @@ export function getMyTeam() {
   return axios.get(`/team/myTeam/`);
 }
 
+export function getUserAllTeams(userId) {
+  return axios.get(`/team/user/all/${userId}`);
+}
+
 export function getOtherTeamDetail(teamId) {
   return axios.get(`/team/details/${teamId}`);
 }

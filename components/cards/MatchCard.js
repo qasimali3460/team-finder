@@ -23,18 +23,24 @@ const MatchCard = ({
   _id,
   myTeamName,
   myProfilePicture,
-  myCoverPhoto,
-  myTeamId,
   otherTeamName,
   otherProfilePicture,
-  otherCoverPhoto,
-  otherTeamId,
   location,
   overs,
   matchDate,
+  myTeamId,
+  otherTeamId,
+  myTeamOwner,
 }) => {
   const goToTeam = () => {
     router.navigate({ pathname: "team", params: { teamId: _id } });
+  };
+
+  const startTrackingMatch = () => {
+    router.navigate({
+      pathname: "score-calculator",
+      params: { matchId: _id, overs, team1: myTeamId, team2: otherTeamId },
+    });
   };
 
   return (
@@ -63,10 +69,20 @@ const MatchCard = ({
         <View>
           <Text style={styles.vs}>VS</Text>
           <Text style={styles.overs}>{overs} Overs</Text>
+          {myTeamOwner && (
+            <Button
+              onPress={startTrackingMatch}
+              colorScheme={"primary"}
+              size={"xs"}
+            >
+              Start
+            </Button>
+          )}
         </View>
         <View style={styles.team}>
           <View style={styles.imgWrapper}>
             <Image style={styles.img} source={{ uri: otherProfilePicture }} />
+
             <Text numberOfLines={1} style={styles.teamName}>
               {otherTeamName}
             </Text>

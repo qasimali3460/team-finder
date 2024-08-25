@@ -46,10 +46,22 @@ export function cancelMatchInvite(matchInvitation) {
   return axios.post(`/match/cancel/${matchInvitation}`);
 }
 
-export function getUpcomingMatches() {
-  return axios.get(`/match/upcoming`);
+export function getUpcomingMatches(teamId) {
+  return axios.get(`/match/upcoming`, {
+    params: {
+      teamId,
+    },
+  });
 }
 
 export function getHistoryMatches() {
   return axios.get(`/match/history`);
+}
+
+export function saveInning(overs, teamId, matchId, inning) {
+  return axios.post(`/match/score`, { overs, teamId, matchId, inning });
+}
+
+export function getInning(matchId) {
+  return axios.get(`/match/score/${matchId}`);
 }

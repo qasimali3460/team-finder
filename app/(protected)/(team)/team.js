@@ -21,14 +21,15 @@ import { Button } from "native-base";
 import { getMyTeam, getOtherTeamDetail } from "../../../services/team.service";
 import { useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import UpcomingMatches from "./Upcoming";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
-  console.log("profile: ", profile);
   const [overlay, setOverlay] = useState(false);
   const [currentUserId] = currentSession();
   const myRoute = useRoute();
   const navigation = useNavigation();
+  const [currentTeamId, setCurrentTeamId] = useState(null);
 
   const editTeam = () => {
     router.navigate("edit-team");
@@ -45,6 +46,7 @@ const Profile = () => {
         .then((response) => {
           const profile = response?.data?.data;
           setProfile(profile);
+          setCurrentTeamId(profile?._id);
         })
         .catch((e) => {
           console.log("e: ", e);
@@ -61,6 +63,7 @@ const Profile = () => {
         .then((response) => {
           const profile = response?.data?.data;
           setProfile(profile);
+          setCurrentTeamId(profile._id);
         })
         .catch((e) => {
           console.log("e: ", e);
@@ -88,7 +91,7 @@ const Profile = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView style={{ paddingBottom: 50 }}>
         <StatusBar barStyle={"dark-content"} />
         <ScreenHeader title={"Team Detail"} />
         <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
@@ -116,13 +119,7 @@ const Profile = () => {
         <View style={[styles.otherInfo, { marginTop: 20 }]}>
           <Text style={styles.detailTitle}>Upcoming Matches</Text>
           <View style={styles.teamsSection}>
-            {/* {teams.map((team, key) => {
-              return (
-                <View key={key} style={styles.otherTeamWrapper}>
-                  <TeamTile title={team.title} logo={team.logo} />
-                </View>
-              );
-            })} */}
+            {currentTeamId && <UpcomingMatches teamId={currentTeamId} />}
           </View>
         </View>
       </ScrollView>

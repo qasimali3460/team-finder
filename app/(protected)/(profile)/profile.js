@@ -24,35 +24,14 @@ import { Button } from "native-base";
 import { useRoute } from "@react-navigation/native";
 import moment from "moment";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const teams = [
-  {
-    title: "Multan Sultan",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMSYerJFUDA_P0_YKm0tizI0kogAj6wXxzWQ&s",
-  },
-  {
-    title: "Lahore Qalanders",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtlgBlQvIzJZ4u8R8lcGNlD0pyG5lUPiH9rA&s",
-  },
-  {
-    title: "Quetta gladiators",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJdpDj05rp-pyZD2HtRgiejPk1fJ_XOqnZrQ&s",
-  },
-  {
-    title: "Chennai super king",
-    logo: "https://static.toiimg.com/thumb/msid-85232066,width-400,resizemode-4/85232066.jpg",
-  },
-  {
-    title: "Sydney Thuders",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq84POhpj9qBmh1hsc-VzMpD-N0NZEpJKjLQ&s",
-  },
-];
+import { getUserAllTeams } from "../../../services/team.service";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [overlay, setOverlay] = useState(false);
   const [currentUserId] = currentSession();
   const [otherUserId, setOtherUserId] = useState(null);
+  const [teams, setTeams] = useState([]);
   const myRoute = useRoute();
 
   const editProfile = () => {
@@ -68,6 +47,14 @@ const Profile = () => {
   }, [profile]);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if (otherUserId) {
+      getUserAllTeams(otherUserId).then((response) => {
+        setTeams(response?.data?.data);
+      });
+    }
+  }, [otherUserId]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -172,7 +159,7 @@ const Profile = () => {
             {teams.map((team, key) => {
               return (
                 <View key={key} style={styles.otherTeamWrapper}>
-                  <TeamTile title={team.title} logo={team.logo} />
+                  <TeamTile title={team.title} logo={team.profilePicture} />
                 </View>
               );
             })}

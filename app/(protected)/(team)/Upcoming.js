@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getUpcomingMatches } from "../../../services/match.service";
 import MatchCard from "../../../components/cards/MatchCard";
 
-const UpcomingMatches = () => {
+const UpcomingMatches = ({ teamId }) => {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -13,7 +13,7 @@ const UpcomingMatches = () => {
 
   const getMatches = () => {
     setLoading(true);
-    getUpcomingMatches()
+    getUpcomingMatches(teamId)
       .then((response) => {
         setMatches(response?.data?.data ?? []);
       })
@@ -26,7 +26,9 @@ const UpcomingMatches = () => {
     <View style={styles.container}>
       <FlatList
         data={matches}
-        renderItem={({ item }) => <MatchCard {...item} />}
+        renderItem={({ item }) => (
+          <MatchCard {...item} {...(teamId ? { myTeamOwner: false } : {})} />
+        )}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
         numColumns={1}
