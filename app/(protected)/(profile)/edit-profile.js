@@ -24,9 +24,9 @@ const EditProfile = () => {
   const [coverFile, setCoverFile] = useState("");
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
-  const [role, setRole] = useState("");
-  const [battingStyle, setBattingStyle] = useState("");
-  const [bowlingStyle, setBowlingStyle] = useState("");
+  const [role, setRole] = useState();
+  const [battingStyle, setBattingStyle] = useState();
+  const [bowlingStyle, setBowlingStyle] = useState();
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [loading, setLoading] = useState(false);
   const [overlay, setOverlay] = useState(false);
@@ -81,15 +81,17 @@ const EditProfile = () => {
         const profile = response?.data?.data;
         setName(profile?.user?.name);
         setLocation(profile?.location);
-        setRole(profile?.prefferedRole);
-        setBowlingStyle(profile?.bowlingStyle);
-        setBattingStyle(profile?.battingStyle);
+        setRole(profile?.prefferedRole ?? "Captain");
+        setBowlingStyle(profile?.bowlingStyle ?? "Right-handed Bat");
+        setBattingStyle(profile?.battingStyle ?? "Right-arm Fast");
         setImg(profile?.profilePicture);
         setDateOfBirth(profile?.dob ? new Date(profile?.dob) : new Date());
         setCover(profile?.coverPhoto);
       })
       .finally(() => setOverlay(false));
   }, []);
+
+  console.log({ role, bowlingStyle, battingStyle });
 
   return (
     <SafeAreaView style={styles.wrapper}>
@@ -173,10 +175,19 @@ const EditProfile = () => {
             <Button
               onPress={updateUser}
               isLoading={loading}
-              disabled={loading}
+              isDisabled={
+                loading ||
+                !location ||
+                !dateOfBirth ||
+                !img ||
+                !cover ||
+                !role ||
+                !battingStyle ||
+                !bowlingStyle
+              }
               isLoadingText="Please Wait"
             >
-              Updates Profile
+              Update Profile
             </Button>
           </View>
         </View>

@@ -15,15 +15,26 @@ import Toast from "react-native-toast-message";
 import assets from "../../assets/assets";
 import { ImageBackground } from "react-native-web";
 import { defaultPlayerImage } from "../../constants/players.constant";
+import { useToast } from "native-base";
 
-const HomeProfile = () => {
+const HomeProfile = ({ setTeamOnboarded }) => {
   const [profile, setProfile] = useState(null);
   const navigation = useNavigation();
+  const toast = useToast();
 
   const handleProfile = () => {
     getMyProfile()
       .then((response) => {
         const profile = response?.data?.data;
+        if (!profile.isOnboarded) {
+          toast.show({
+            description: "Update your profile",
+          });
+          router.navigate("edit-profile");
+        }
+        setTeamOnboarded(profile?.isTeamOnboarded ?? false);
+        console.log("profile?.isTeamOnboarded: ", profile?.isTeamOnboarded);
+        console.log("setTeamOnboarded: ", setTeamOnboarded);
         setProfile(profile);
       })
       .catch((e) => {

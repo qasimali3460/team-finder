@@ -22,6 +22,7 @@ import { getMyTeam, getOtherTeamDetail } from "../../../services/team.service";
 import { useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UpcomingMatches from "./Upcoming";
+import { useToast } from "native-base";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -30,6 +31,7 @@ const Profile = () => {
   const myRoute = useRoute();
   const navigation = useNavigation();
   const [currentTeamId, setCurrentTeamId] = useState(null);
+  const toast = useToast();
 
   const editTeam = () => {
     router.navigate("edit-team");
@@ -45,6 +47,10 @@ const Profile = () => {
       getMyTeam()
         .then((response) => {
           const profile = response?.data?.data;
+          if (!response?.data?.isTeamOnboarded) {
+            toast.show({ description: "Add Team first" });
+            editTeam();
+          }
           setProfile(profile);
           setCurrentTeamId(profile?._id);
         })

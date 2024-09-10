@@ -79,12 +79,14 @@ const ProfileImage = ({
   return (
     <View style={styles.imgOuter}>
       <View style={{ flex: 1 }}>
-        <Image
-          source={{
-            uri: cover ?? defaultPlayerImage,
-          }}
-          style={styles.coverPhoto}
-        />
+        {cover && (
+          <Image
+            source={{
+              uri: cover,
+            }}
+            style={styles.coverPhoto}
+          />
+        )}
         {!readOnly && (
           <TouchableOpacity
             onPress={openCoverImagePicker}
@@ -96,7 +98,7 @@ const ProfileImage = ({
             <FontAwesome
               style={styles.imgUpdate}
               name="camera"
-              size={24}
+              size={18}
               color="white"
             />
           </TouchableOpacity>
@@ -108,9 +110,6 @@ const ProfileImage = ({
             <Image
               style={styles.img}
               source={{ uri: uri ? uri : defaultPlayerImage }}
-              // source={{
-              //   uri: "https://crickettimes.com/wp-content/uploads/2023/07/AB-de-Villiers-1.jpg",
-              // }}
             />
           </View>
           {!readOnly && (
@@ -121,7 +120,7 @@ const ProfileImage = ({
               <FontAwesome
                 style={styles.imgUpdate}
                 name="camera"
-                size={24}
+                size={18}
                 color="white"
               />
             </TouchableOpacity>
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
   cameraWrapper: {
     backgroundColor: "black",
     position: "absolute",
-    padding: 10,
+    padding: 8,
     borderRadius: 20,
     bottom: -10,
     right: 30,

@@ -94,11 +94,10 @@ const EditTeam = () => {
     setOverlay(true);
     getMyTeam()
       .then((response) => {
-        console.log("response: ", response?.data?.data);
         const team = response?.data?.data;
         setName(team?.teamName);
         setAddress(team?.address);
-        setTeamType(team?.teamType);
+        setTeamType(team?.teamType ?? "Tape ball");
         setCover(team?.coverPhoto);
         setImg(team?.profilePicture);
         setDescription(team?.description);
@@ -168,10 +167,12 @@ const EditTeam = () => {
             <Button
               onPress={updateTeam}
               isLoading={loading}
-              disabled={loading}
+              isDisabled={
+                loading || !img || !cover || !name || !description || !teamType
+              }
               isLoadingText="Please Wait"
             >
-              Updates Team
+              Update Team
             </Button>
           </View>
         </View>

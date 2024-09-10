@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import assets from "../../assets/assets";
 import { LinearGradient } from "expo-linear-gradient";
@@ -12,6 +12,7 @@ const tiles = [
     icon: assets.search,
     path: "find-teams",
     colors: ["hsla(159, 82%, 55%, 1)", "hsla(206, 98%, 48%, 1)"],
+    team: true,
   },
   {
     name: "Matches",
@@ -36,12 +37,14 @@ const tiles = [
     icon: assets.teamMembers,
     path: "team-members",
     colors: ["hsla(270, 94%, 25%, 1)", "hsla(158, 94%, 49%, 1)"],
+    team: true,
   },
   {
     name: "Match Invites",
     icon: assets.invites,
     path: "match-invites",
     colors: ["hsla(52, 43%, 55%, 1)", "hsla(51, 33%, 75%, 1)"],
+    team: true,
   },
   {
     name: "My Invites",
@@ -56,21 +59,25 @@ const handlePress = (path) => {
 };
 
 const HomeScreen = () => {
+  const [teamOnboarded, setTeamOnboarded] = useState(true);
+
   return (
     <View style={styles.container}>
       <Image source={assets.home} style={styles.backgroundImage} />
-      <HomeProfile />
+      <HomeProfile setTeamOnboarded={setTeamOnboarded} />
       <View style={styles.logoContainer}>
         <Image source={assets.logo1} style={styles.logo} />
       </View>
 
       <View style={styles.tilesContainer}>
         {tiles.map((tile, index) => {
+          const isDisabled = tile.team && !teamOnboarded;
           return (
             <TouchableOpacity
               onPress={() => handlePress(tile.path)}
               key={index}
-              style={styles.tile}
+              style={[styles.tile, { opacity: isDisabled ? 0.3 : 1 }]}
+              disabled={isDisabled}
             >
               <LinearGradient
                 colors={tile.colors}
@@ -80,7 +87,10 @@ const HomeScreen = () => {
               >
                 <Image source={tile.icon} style={styles.tileIcon} />
               </LinearGradient>
-              <Text style={styles.tileText}>{tile.name}</Text>
+              <Text style={styles.tileText}>
+                {tile.name}
+                {isDisabled}
+              </Text>
             </TouchableOpacity>
           );
         })}
