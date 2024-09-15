@@ -15,36 +15,40 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
 import { Button } from "native-base";
-import { login } from "../../services/auth.service";
+import { forgetPassword } from "../../services/auth.service";
 import Toast from "react-native-toast-message";
-import * as SecureStore from "expo-secure-store";
 
-const LoginScreen = () => {
+const ForgetPassword = () => {
   const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const sendOtp = () => {
     setLoading(true);
-    login(phone, password)
+    forgetPassword(phone)
       .then(async (response) => {
-        await SecureStore.setItemAsync("token", response?.data?.token);
         Toast.show({
           type: "successToast",
-          text1: "Login",
-          text2: "Logged in succesfully.",
+          text1: "Forget Password",
+          text2: "Otp Sent succesfully",
           position: "top",
         });
         setPhone("");
-        setPassword("");
-        router.replace("(protected)");
+        router.navigate({
+          pathname: "verify-otp",
+          params: {
+            phoneNumber: phone,
+            successMessage:
+              "Otp verified successfully. Please reset your password",
+            successRoute: "reset-password",
+          },
+        });
       })
       .catch((e) => {
         const errorMessage = e?.response?.data?.message ?? "Failed to login";
         if (errorMessage) {
           Toast.show({
             type: "errorToast",
-            text1: "Login error",
+            text1: "Forget Password Error",
             text2: errorMessage,
             position: "top",
           });
@@ -65,7 +69,7 @@ const LoginScreen = () => {
             <Image source={assets.illustr2} style={styles.illustration} />
           </View>
           <View style={styles.inputWrapper}>
-            <Text style={styles.loginHere}>Login Here</Text>
+            <Text style={styles.loginHere}>Forget Password</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter your phone number"
@@ -74,29 +78,17 @@ const LoginScreen = () => {
               value={phone}
               onChangeText={setPhone}
             />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
             <Button
-              onPress={handleLogin}
+              onPress={sendOtp}
               isLoading={loading}
-              disabled={!phone || !password || loading}
+              disabled={!phone || loading}
               isLoadingText="Please Wait"
             >
-              Login
+              Send OTP
             </Button>
             <View style={styles.register}>
-              <TouchableOpacity
-                onPress={() => router.navigate("forget-password")}
-              >
-                <Text style={styles.already}>Forget Password</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => router.navigate("register")}>
-                <Text style={styles.already}>Don't have an account</Text>
+              <TouchableOpacity onPress={() => router.navigate("login")}>
+                <Text style={styles.already}>Back to login ?</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -164,12 +156,12 @@ const styles = StyleSheet.create({
   register: {
     paddingVertical: 10,
     alignItems: "flex-end",
-    flexDirection: "row",
     justifyContent: "space-between",
+    flex: 1,
   },
   already: {
     color: "navy",
   },
 });
 
-export default LoginScreen;
+export default ForgetPassword;

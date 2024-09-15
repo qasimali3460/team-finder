@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -34,13 +34,21 @@ const RegisterScreen = () => {
         Toast.show({
           type: "successToast",
           text1: "Registered",
-          text2: "Registered succesfully. Please login.",
+          text2: "Registered succesfully. Please verify your acccount",
           position: "top",
         });
         setName("");
         setPhone("");
         setPassword("");
-        goToLogin("/");
+        // goToLogin("/");
+        router.navigate({
+          pathname: "verify-otp",
+          params: {
+            phoneNumber: phone,
+            successRoute: "login",
+            successMessage: "Your account has been verified. Please Login",
+          },
+        });
       })
       .catch((e) => {
         const errorMessage = e?.response?.data?.message ?? "Failed to register";
@@ -93,9 +101,7 @@ const RegisterScreen = () => {
                 value={password}
                 onChangeText={setPassword}
               />
-              {/* <TouchableOpacity onPress={registerUser} style={styles.button}>
-                <Text style={styles.buttonText}>Register</Text>
-              </TouchableOpacity> */}
+
               <Button
                 onPress={registerUser}
                 isLoading={loading}

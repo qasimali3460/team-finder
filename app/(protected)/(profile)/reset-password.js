@@ -10,41 +10,43 @@ import {
   StatusBar,
   Alert,
 } from "react-native";
-import assets from "../../assets/assets";
+import assets from "../../../assets/assets";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
 import { Button } from "native-base";
-import { login } from "../../services/auth.service";
+import { resetPassword } from "../../../services/auth.service";
 import Toast from "react-native-toast-message";
-import * as SecureStore from "expo-secure-store";
+import { deleteItemAsync } from "expo-secure-store";
 
-const LoginScreen = () => {
-  const [phone, setPhone] = useState("");
+const ForgetPassword = () => {
   const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const reset = () => {
     setLoading(true);
-    login(phone, password)
-      .then(async (response) => {
-        await SecureStore.setItemAsync("token", response?.data?.token);
+    resetPassword(password)
+      .then(async () => {
+        deleteItemAsync("token");
         Toast.show({
           type: "successToast",
-          text1: "Login",
-          text2: "Logged in succesfully.",
+          text1: "Password Reset",
+          text2: "Password reset successfully. Please Login",
           position: "top",
         });
-        setPhone("");
         setPassword("");
-        router.replace("(protected)");
+        setRePassword("");
+        router.replace({
+          pathname: "login",
+        });
       })
       .catch((e) => {
         const errorMessage = e?.response?.data?.message ?? "Failed to login";
         if (errorMessage) {
           Toast.show({
             type: "errorToast",
-            text1: "Login error",
+            text1: "Password reset error",
             text2: errorMessage,
             position: "top",
           });
@@ -65,38 +67,34 @@ const LoginScreen = () => {
             <Image source={assets.illustr2} style={styles.illustration} />
           </View>
           <View style={styles.inputWrapper}>
-            <Text style={styles.loginHere}>Login Here</Text>
+            <Text style={styles.loginHere}>Reset Password</Text>
             <TextInput
               style={styles.input}
-              placeholder="Enter your phone number"
-              keyboardType="number-pad"
+              placeholder="Enter your new password"
               autoCapitalize="none"
-              value={phone}
-              onChangeText={setPhone}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              secureTextEntry
               value={password}
               onChangeText={setPassword}
             />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your new password"
+              autoCapitalize="none"
+              value={rePassword}
+              onChangeText={setRePassword}
+            />
             <Button
-              onPress={handleLogin}
+              onPress={reset}
               isLoading={loading}
-              disabled={!phone || !password || loading}
+              isDisabled={
+                !password || !rePassword || password !== rePassword || loading
+              }
               isLoadingText="Please Wait"
             >
-              Login
+              Reset Password
             </Button>
             <View style={styles.register}>
-              <TouchableOpacity
-                onPress={() => router.navigate("forget-password")}
-              >
-                <Text style={styles.already}>Forget Password</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => router.navigate("register")}>
-                <Text style={styles.already}>Don't have an account</Text>
+              <TouchableOpacity onPress={() => router.navigate("login")}>
+                <Text style={styles.already}>Back to login ?</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -164,12 +162,12 @@ const styles = StyleSheet.create({
   register: {
     paddingVertical: 10,
     alignItems: "flex-end",
-    flexDirection: "row",
     justifyContent: "space-between",
+    flex: 1,
   },
   already: {
     color: "navy",
   },
 });
 
-export default LoginScreen;
+export default ForgetPassword;
