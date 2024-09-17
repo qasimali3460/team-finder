@@ -6,9 +6,9 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { RFValue } from "react-native-responsive-fontsize";
-import { router, useFocusEffect, useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import PlayerInfo from "@/components/tiles/profile/Info";
 import TeamTile from "../../../components/tiles/profile/TeamTile";
 import {
@@ -28,7 +28,7 @@ import { getUserAllTeams } from "../../../services/team.service";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
-  const [overlay, setOverlay] = useState(false);
+  const [overlay, setOverlay] = useState(true);
   const [currentUserId] = currentSession();
   const [otherUserId, setOtherUserId] = useState(null);
   const [teams, setTeams] = useState([]);

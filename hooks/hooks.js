@@ -10,7 +10,6 @@ export function getAuth() {
 
   useEffect(() => {
     getItemAsync("token").then((token) => {
-      console.log("token: ", token);
       setToken(token);
       setLoaded(true);
     });

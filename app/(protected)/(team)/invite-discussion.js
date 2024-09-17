@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Keyboard,
+  Alert,
 } from "react-native";
 import assets from "../../../assets/assets";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -56,6 +58,22 @@ const DiscussionWidget = () => {
       });
     }
   }, [socket, inviteId, comments, done]);
+
+  // Scroll to the end when the keyboard is opened
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setTimeout(() => {
+          flatListRef.current.scrollToEnd({ animated: true });
+        }, 500);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove(); // Cleanup the listener on unmount
+    };
+  }, []);
 
   const handleAddComment = () => {
     if (newComment.trim() !== "") {
@@ -145,7 +163,7 @@ const DiscussionWidget = () => {
             onFocus={() => {
               setTimeout(() => {
                 flatListRef.current.scrollToEnd({ animated: true });
-              }, 1000);
+              }, 500);
             }}
             InputLeftElement={
               <TouchableOpacity onPress={() => setOpen(true)}>

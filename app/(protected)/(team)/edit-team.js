@@ -110,7 +110,7 @@ const EditTeam = () => {
       <ScrollView style={styles.wrapper}>
         <Spinner visible={overlay} textContent={"Loading..."} textStyle={{}} />
         <StatusBar barStyle={"dark-content"} />
-        <ScreenHeader title={"Edit Profile"} />
+        <ScreenHeader title={"Edit Team"} />
         <ProfileImage
           uri={img}
           setUri={setImg}

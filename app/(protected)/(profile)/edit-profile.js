@@ -91,8 +91,6 @@ const EditProfile = () => {
       .finally(() => setOverlay(false));
   }, []);
 
-  console.log({ role, bowlingStyle, battingStyle });
-
   return (
     <SafeAreaView style={styles.wrapper}>
       <ScrollView style={styles.wrapper}>

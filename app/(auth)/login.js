@@ -18,6 +18,7 @@ import { Button } from "native-base";
 import { login } from "../../services/auth.service";
 import Toast from "react-native-toast-message";
 import * as SecureStore from "expo-secure-store";
+import PasswordInput from "../../components/input/passowrd";
 
 const LoginScreen = () => {
   const [phone, setPhone] = useState("");
@@ -74,12 +75,10 @@ const LoginScreen = () => {
               value={phone}
               onChangeText={setPhone}
             />
-            <TextInput
-              style={styles.input}
+            <PasswordInput
               placeholder="Enter your password"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
+              password={password}
+              setPassword={setPassword}
             />
             <Button
               onPress={handleLogin}
@@ -93,7 +92,7 @@ const LoginScreen = () => {
               <TouchableOpacity
                 onPress={() => router.navigate("forget-password")}
               >
-                <Text style={styles.already}>Forget Password</Text>
+                <Text style={styles.already}>Forget password</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => router.navigate("register")}>
                 <Text style={styles.already}>Don't have an account</Text>

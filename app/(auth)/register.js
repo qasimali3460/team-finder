@@ -16,6 +16,7 @@ import { router } from "expo-router";
 import { register } from "../../services/auth.service";
 import Toast from "react-native-toast-message";
 import { Button } from "native-base";
+import PasswordInput from "../../components/input/passowrd";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
@@ -94,12 +95,11 @@ const RegisterScreen = () => {
                 value={phone}
                 onChangeText={setPhone}
               />
-              <TextInput
+              <PasswordInput
                 style={styles.input}
                 placeholder="Enter your password"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
+                password={password}
+                setPassword={setPassword}
               />
 
               <Button
@@ -113,7 +113,7 @@ const RegisterScreen = () => {
               <View style={styles.login}>
                 <TouchableOpacity onPress={goToLogin}>
                   <Text style={styles.already}>
-                    Already Have an account ? Login
+                    Already have an account ? Login
                   </Text>
                 </TouchableOpacity>
               </View>

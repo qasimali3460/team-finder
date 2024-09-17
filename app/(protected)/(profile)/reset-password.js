@@ -18,6 +18,7 @@ import { Button } from "native-base";
 import { resetPassword } from "../../../services/auth.service";
 import Toast from "react-native-toast-message";
 import { deleteItemAsync } from "expo-secure-store";
+import PasswordInput from "../../../components/input/passowrd";
 
 const ForgetPassword = () => {
   const [password, setPassword] = useState("");
@@ -68,19 +69,17 @@ const ForgetPassword = () => {
           </View>
           <View style={styles.inputWrapper}>
             <Text style={styles.loginHere}>Reset Password</Text>
-            <TextInput
-              style={styles.input}
+            <PasswordInput
               placeholder="Enter your new password"
               autoCapitalize="none"
-              value={password}
-              onChangeText={setPassword}
+              password={password}
+              setPassword={setPassword}
             />
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your new password"
+            <PasswordInput
+              placeholder="ReEnter your new password"
               autoCapitalize="none"
-              value={rePassword}
-              onChangeText={setRePassword}
+              password={rePassword}
+              setPassword={setRePassword}
             />
             <Button
               onPress={reset}
