@@ -29,7 +29,7 @@ const ForgetPassword = () => {
         Toast.show({
           type: "successToast",
           text1: "Forget Password",
-          text2: "Otp Sent succesfully",
+          text2: `Otp Sent succesfully. Use OTP ${response.data.otp}`,
           position: "top",
         });
         setPhone("");

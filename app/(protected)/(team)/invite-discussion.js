@@ -26,7 +26,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const DiscussionWidget = () => {
   const [socket] = getSocket();
   const [comments, setComments] = useState([]);
-  console.log("comments: ", comments);
   const [newComment, setNewComment] = useState("");
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
@@ -50,9 +49,7 @@ const DiscussionWidget = () => {
       socket.emit("joinRoom", { matchInvitationId: inviteId });
 
       socket.on("chatMessage", (response) => {
-        console.log("new chat message ", response.message.myMessage);
         if (response?.message) {
-          console.log("previous", comments, response?.message);
           setComments((prevValue) => [...prevValue, response?.message]);
         }
       });
@@ -85,7 +82,6 @@ const DiscussionWidget = () => {
           matchInvitationId: inviteId,
         },
         (response) => {
-          console.log("response: ", response);
           if (response?.message) {
             setComments([...comments, response?.message]);
           }

@@ -9,7 +9,6 @@ export function getOtherUserProfile(userId) {
 }
 
 export function updateMyProfile(formData) {
-  console.log("userProfile: ", formData);
   return axios.post(`/profile`, formData, {
     headers: {
       Accept: "application/json",

@@ -59,7 +59,6 @@ const EditProfile = () => {
         });
       })
       .catch((e) => {
-        console.log("e: ", e);
         const errorMessage =
           e?.response?.data?.message || e?.response?.data || "Failed to update";
         if (errorMessage) {

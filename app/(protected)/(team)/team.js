@@ -24,7 +24,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import UpcomingMatches from "./Upcoming";
 import { useToast } from "native-base";
 
-const Profile = () => {
+const Teams = () => {
   const [profile, setProfile] = useState(null);
   const [overlay, setOverlay] = useState(false);
   const [currentUserId] = currentSession();
@@ -55,7 +55,6 @@ const Profile = () => {
           setCurrentTeamId(profile?._id);
         })
         .catch((e) => {
-          console.log("e: ", e);
           Toast.show({
             type: "errorToast",
             text1: "Team error",
@@ -72,7 +71,6 @@ const Profile = () => {
           setCurrentTeamId(profile._id);
         })
         .catch((e) => {
-          console.log("e: ", e);
           Toast.show({
             type: "errorToast",
             text1: "Team error",
@@ -133,7 +131,7 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Teams;
 
 const styles = StyleSheet.create({
   editWrapper: {

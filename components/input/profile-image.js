@@ -28,8 +28,6 @@ const ProfileImage = ({
         quality: 1,
       });
 
-      console.log(result);
-
       const file = {
         uri: result?.assets[0].uri,
         type:
@@ -40,7 +38,6 @@ const ProfileImage = ({
         // size: result?.assets[0].fileSize
       };
 
-      console.log("file now is: ", file);
       if (!result.cancelled) {
         setUri(result?.assets?.[0]?.uri);
         setImgFile(file);

@@ -20,12 +20,6 @@ const tiles = [
     path: "matches",
     colors: ["hsla(318, 44%, 51%, 1)", "hsla(347, 94%, 48%, 1)"],
   },
-  // {
-  //   name: "My Profile",
-  //   icon: assets.profile,
-  //   path: "profile",
-  //   colors: ["hsla(234, 100%, 83%, 1)", "hsla(288, 100%, 81%, 1)"],
-  // },
   {
     name: "My Team",
     icon: assets.cricket,
@@ -117,8 +111,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 300,
-    height: 300,
+    width: 150,
+    height: 150,
+    marginTop: 50,
     objectFit: "contain",
   },
   tilesContainer: {

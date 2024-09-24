@@ -67,7 +67,6 @@ function Tabs() {
             >
               <Pressable
                 onPress={() => {
-                  console.log(i);
                   setIndex(i);
                 }}
               >

@@ -23,7 +23,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { AntDesign } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Players = () => {
+const MyInvites = () => {
   const [invites, setInvites] = useState([]);
   const [loading, setLoading] = useState(false);
   const [invite, setInvite] = useState(null);
@@ -142,7 +142,7 @@ const Players = () => {
     </SafeAreaView>
   );
 };
-export default Players;
+export default MyInvites;
 
 const styles = StyleSheet.create({
   container: {

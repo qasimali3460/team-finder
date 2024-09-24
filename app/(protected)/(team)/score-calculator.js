@@ -69,7 +69,6 @@ const CricketScoreScreen = () => {
   };
 
   const handleSubmit = () => {
-    console.log({ meta, selectedInning, completed: isAllBallsFilled() });
     const selectedInningData = selectedInning === 1 ? inning1 : inning2;
     saveInning(
       selectedInningData,
@@ -153,7 +152,6 @@ const CricketScoreScreen = () => {
     );
   };
 
-  console.log("inning2: ", inning2);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScreenHeader

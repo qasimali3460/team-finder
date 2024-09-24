@@ -20,7 +20,6 @@ const VerifyOtp = () => {
     const { phoneNumber, successRoute, successMessage } = myRoute.params;
     verifyOtp(otp, phoneNumber)
       .then(async (response) => {
-        console.log("response: ", response?.data?.token);
         Toast.show({
           type: "successToast",
           text1: "OTP Verified",
@@ -33,7 +32,6 @@ const VerifyOtp = () => {
         router.replace(successRoute);
       })
       .catch((e) => {
-        console.log("e: ", e);
         const errorMessage =
           e?.response?.data?.message ?? "Failed to verify OTP";
         Toast.show({

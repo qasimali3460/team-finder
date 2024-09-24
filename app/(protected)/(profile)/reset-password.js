@@ -20,7 +20,7 @@ import Toast from "react-native-toast-message";
 import { deleteItemAsync } from "expo-secure-store";
 import PasswordInput from "../../../components/input/passowrd";
 
-const ForgetPassword = () => {
+const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -169,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgetPassword;
+export default ResetPassword;

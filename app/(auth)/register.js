@@ -35,7 +35,7 @@ const RegisterScreen = () => {
         Toast.show({
           type: "successToast",
           text1: "Registered",
-          text2: "Registered succesfully. Please verify your acccount",
+          text2: `Registered succesfully. Please verify your acccount. Use OTP ${response.data.otp}`,
           position: "top",
         });
         setName("");

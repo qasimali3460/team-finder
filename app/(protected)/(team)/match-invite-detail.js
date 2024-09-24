@@ -68,7 +68,6 @@ const MatchInviteDetail = () => {
     setCancelLoading(true);
     cancelMatchInvite(inviteId)
       .then((response) => {
-        console.log("response: ", response);
         Toast.show({
           type: "successToast",
           text1: "Invite",
@@ -107,7 +106,6 @@ const MatchInviteDetail = () => {
     setCancelLoading(true);
     declineMatchInvite(inviteId)
       .then((response) => {
-        console.log("response: ", response);
         Toast.show({
           type: "successToast",
           text1: "Invite",

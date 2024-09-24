@@ -33,8 +33,6 @@ const HomeProfile = ({ setTeamOnboarded }) => {
           router.navigate("edit-profile");
         }
         setTeamOnboarded(profile?.isTeamOnboarded ?? false);
-        console.log("profile?.isTeamOnboarded: ", profile?.isTeamOnboarded);
-        console.log("setTeamOnboarded: ", setTeamOnboarded);
         setProfile(profile);
       })
       .catch((e) => {

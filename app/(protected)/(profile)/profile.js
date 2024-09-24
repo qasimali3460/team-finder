@@ -88,7 +88,6 @@ const Profile = () => {
             setOtherUserId(profile?.user?._id);
           })
           .catch((e) => {
-            console.log("e: ", e);
             Toast.show({
               type: "errorToast",
               text1: "Profile error",
@@ -105,7 +104,6 @@ const Profile = () => {
             setProfile(profile);
           })
           .catch((e) => {
-            console.log("e: ", e);
             Toast.show({
               type: "errorToast",
               text1: "Profile error",

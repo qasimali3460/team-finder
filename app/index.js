@@ -3,7 +3,7 @@ import React from "react";
 import { getAuth } from "../hooks/hooks";
 import { Redirect } from "expo-router";
 
-const index = () => {
+const App = () => {
   const [token, isTokenLoaded] = getAuth();
 
   if (!isTokenLoaded) {
@@ -17,6 +17,6 @@ const index = () => {
   );
 };
 
-export default index;
+export default App;
 
 const styles = StyleSheet.create({});

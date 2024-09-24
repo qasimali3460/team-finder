@@ -12,7 +12,7 @@ import { sendMatchInvite } from "../../../services/match.service";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SendInvite from "../../../components/teams/SendInvite";
 
-const Players = () => {
+const FindTeams = () => {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(false);
   const [invite, setInvite] = useState(null);
@@ -149,7 +149,7 @@ const Players = () => {
     </SafeAreaView>
   );
 };
-export default Players;
+export default FindTeams;
 
 const styles = StyleSheet.create({
   detailWrapper: {
