@@ -4,8 +4,8 @@ import { deleteItemAsync, getItem } from "expo-secure-store";
 import { Alert } from "react-native";
 import Toast from "react-native-toast-message";
 
-export const SERVER_URL = "http://192.168.10.4:5000";
-// export const SERVER_URL = "https://9d4e-116-58-42-68.ngrok-free.app";
+// export const SERVER_URL = "http://192.168.10.5:5000";
+export const SERVER_URL = "https://ed8f-34-227-194-17.ngrok-free.app";
 export const BASE_URL = `${SERVER_URL}/api/v1`;
 
 const instance = axios.create({

@@ -191,6 +191,5 @@ const styles = StyleSheet.create({
   },
   otherTeamWrapper: {
     width: "50%",
-    marginTop: 20,
   },
 });

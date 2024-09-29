@@ -27,7 +27,11 @@ const Players = () => {
         <FlatList
           data={members}
           renderItem={({ item, index }) => (
-            <PlayerCard {...item} isLast={index === members.length - 1} />
+            <PlayerCard
+              {...item}
+              isLast={index === members.length - 1}
+              isOdd={members.length % 2 !== 0}
+            />
           )}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}

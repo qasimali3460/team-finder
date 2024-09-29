@@ -11,6 +11,7 @@ import * as Location from "expo-location";
 import { sendMatchInvite } from "../../../services/match.service";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SendInvite from "../../../components/teams/SendInvite";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const FindTeams = () => {
   const [teams, setTeams] = useState([]);
@@ -57,7 +58,8 @@ const FindTeams = () => {
 
   const viewInvite = (invite) => {
     setInvite(invite);
-    setOpen(true);
+    // setOpen(true);
+    bottomSheetRef?.current?.open();
   };
 
   const handleSubmit = (date, type, overs, location, message) => {
@@ -66,6 +68,7 @@ const FindTeams = () => {
     sendMatchInvite(invite._id, date, type, overs, location, message)
       .then((response) => {
         setOpen(false);
+        bottomSheetRef?.current?.close();
         Toast.show({
           type: "successToast",
           text1: "Invite",
@@ -76,6 +79,7 @@ const FindTeams = () => {
       })
       .catch((e) => {
         setOpen(false);
+        bottomSheetRef?.current?.close();
         const errorMessage = e?.response?.data?.message ?? "Failed to register";
         if (errorMessage) {
           Toast.show({
@@ -89,8 +93,7 @@ const FindTeams = () => {
       .finally(() => setInviteLoading(false));
   };
 
-  const viewTeam = (team) => {
-    setTeam(team);
+  const sendInvite = () => {
     bottomSheetRef?.current?.open();
   };
 
@@ -124,11 +127,7 @@ const FindTeams = () => {
         data={teams}
         renderItem={({ item }) => (
           <>
-            <TeamCard
-              sendInvite={() => viewInvite(item)}
-              viewTeam={() => viewTeam(item)}
-              {...item}
-            />
+            <TeamCard sendInvite={() => viewInvite(item)} {...item} />
           </>
         )}
         keyExtractor={(item) => item.inviteId}
@@ -137,15 +136,27 @@ const FindTeams = () => {
         onRefresh={getTeams}
         refreshing={loading}
       />
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
-        <Modal.Content maxWidth={"95%"} height={1000} maxHeight={"80%"}>
-          <SendInvite
-            loading={inviteLoading}
-            onClose={() => setOpen(false)}
-            onSubmit={handleSubmit}
-          />
-        </Modal.Content>
-      </Modal>
+      {/* <Modal isOpen={open} onClose={() => setOpen(false)}>
+        <Modal.Content maxWidth={"95%"} height={1000} maxHeight={"80%"}> */}
+
+      <RBSheet
+        RBSheet
+        ref={bottomSheetRef}
+        draggable
+        dragOnContent
+        height={600}
+        // customStyles={{
+        //   container: styles.sheetContainer,
+        // }}
+      >
+        <SendInvite
+          loading={inviteLoading}
+          onClose={() => setOpen(false)}
+          onSubmit={handleSubmit}
+        />
+      </RBSheet>
+      {/* </Modal.Content>
+      </Modal> */}
     </SafeAreaView>
   );
 };

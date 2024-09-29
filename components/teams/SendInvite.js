@@ -66,11 +66,12 @@ const SendInvite = ({ loading, onSubmit, onClose }) => {
           <View style={styles.fieldWrapper}>
             <Text style={styles.fieldTitle}>Message</Text>
 
-            <TextArea
-              h={20}
-              placeholder="Say something "
+            <TextField
               value={message}
               onChangeText={setMessage}
+              placeholder="Say something"
+              name="message"
+              keyboardType="default"
             />
           </View>
 
@@ -85,7 +86,7 @@ const SendInvite = ({ loading, onSubmit, onClose }) => {
             <Button
               onPress={submit}
               isLoading={loading}
-              disabled={loading || !date || !location || !overs}
+              isDisabled={loading || !date || !location || !overs}
               isLoadingText="Please Wait"
               style={{ flex: 1 }}
             >

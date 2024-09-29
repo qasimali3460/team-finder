@@ -4,9 +4,10 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { router } from "expo-router";
 
 const PlayerCard = ({
-  user: { name },
+  user: { name, _id },
   userDetails: { profilePicture, prefferedRole },
   isLast,
+  isOdd,
 }) => {
   const goToProfile = () => {
     router.navigate({ pathname: "profile", params: { userId: _id } });
@@ -14,7 +15,7 @@ const PlayerCard = ({
   return (
     <TouchableOpacity
       onPress={goToProfile}
-      style={[styles.card, { flex: isLast ? 0.5 : 1 }]}
+      style={[styles.card, { flex: isLast && isOdd ? 0.5 : 1 }]}
     >
       <View style={styles.imgWrapper}>
         <Image source={{ uri: profilePicture }} style={styles.img} />
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     overflow: "hidden",
     height: RFValue(200),
+    minWidth: 150,
   },
   name: {
     fontSize: RFValue(20),

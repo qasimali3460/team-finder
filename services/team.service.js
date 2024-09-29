@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import axios from "./index";
 
 export function getMyTeam() {
@@ -44,8 +45,10 @@ export function acceptInvite(invitationId) {
   return axios.post(`/team/accept`, { invitationId });
 }
 
-export function getMyTeamMembers() {
-  return axios.get(`/team/teamMembers`);
+export function getMyTeamMembers(teamId) {
+  return axios.get(`/team/teamMembers`, {
+    params: { ...(teamId ? { teamId } : {}) },
+  });
 }
 
 export function getNearbyTeams(search, longitude, latitude) {

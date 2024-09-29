@@ -1,5 +1,6 @@
 import {
   Alert,
+  FlatList,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -18,14 +19,20 @@ import { currentSession } from "../../../hooks/hooks";
 import ProfileImage from "../../../components/input/profile-image";
 import ScreenHeader from "../../../components/tiles/profile/ScreenHeader";
 import { Button } from "native-base";
-import { getMyTeam, getOtherTeamDetail } from "../../../services/team.service";
+import {
+  getMyTeam,
+  getMyTeamMembers,
+  getOtherTeamDetail,
+} from "../../../services/team.service";
 import { useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UpcomingMatches from "./Upcoming";
 import { useToast } from "native-base";
+import PlayerCard from "../../../components/cards/PlayerCard";
 
 const Teams = () => {
   const [profile, setProfile] = useState(null);
+  const [members, setMembers] = useState([]);
   const [overlay, setOverlay] = useState(false);
   const [currentUserId] = currentSession();
   const myRoute = useRoute();
@@ -36,6 +43,14 @@ const Teams = () => {
   const editTeam = () => {
     router.navigate("edit-team");
   };
+
+  useEffect(() => {
+    if (profile?._id) {
+      getMyTeamMembers(profile?._id).then((response) => {
+        setMembers(response?.data?.data ?? []);
+      });
+    }
+  }, [profile]);
 
   const fetchTeam = () => {
     let teamId = null;
@@ -120,6 +135,21 @@ const Teams = () => {
             <PlayerInfo title={"Team type"} value={profile?.teamType} />
           </View>
         </View>
+        {members?.length ? (
+          <View style={[styles.otherInfo, { marginTop: 20 }]}>
+            <Text style={styles.detailTitle}>Members</Text>
+            <View style={styles.teamsSection}>
+              <FlatList
+                data={members}
+                renderItem={({ item, index }) => (
+                  <PlayerCard {...item} isLast={false} isOdd={false} />
+                )}
+                keyExtractor={(item) => item.id}
+                horizontal={true}
+              />
+            </View>
+          </View>
+        ) : null}
         <View style={[styles.otherInfo, { marginTop: 20 }]}>
           <Text style={styles.detailTitle}>Upcoming Matches</Text>
           <View style={styles.teamsSection}>

@@ -136,7 +136,7 @@ const CricketScoreScreen = () => {
                 ballTextStyles.push(styles.wicketText);
               } else if (item === "W" || item === "NB") {
                 ballTextStyles.push(styles.wideText);
-              } else if (item.match(/\d+/)) {
+              } else if (item?.match(/\d+/)) {
                 ballTextStyles.push(styles.scoreText);
               }
               return (
